@@ -8,7 +8,7 @@ If you've ever tried to write a bot prompt from scratch in a text box, you know 
 
 ## Download
 
-**[Download the latest Windows installer (.msi)](https://github.com/stevejackhammer/bot-manager-desktop/releases/latest)**
+**[Download the latest Windows installer (.msi)](https://github.com/thedirkfiles-000/bot-manager-desktop/releases/latest)**
 
 No install prerequisites — just download, run, and start building bots.
 
@@ -95,7 +95,7 @@ The MSI installer is output to `src-tauri/target/release/bundle/msi/`.
 
 ## Contributing
 
-Bug reports and feature requests are welcome — [open an issue](https://github.com/stevejackhammer/bot-manager-desktop/issues). If you want to submit a PR, open an issue first to discuss the change.
+Bug reports and feature requests are welcome — [open an issue](https://github.com/thedirkfiles-000/bot-manager-desktop/issues). If you want to submit a PR, open an issue first to discuss the change.
 
 ---
 
