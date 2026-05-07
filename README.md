@@ -1,39 +1,60 @@
-# Bot Manager
+# Bot Manager Desktop
 
-A desktop app for authoring and managing roleplay chatbot profiles for platforms like **PolyBuzz** and **HotChatBots**.
+A free, open-source desktop app for building roleplay chatbot profiles for **PolyBuzz**. No accounts, no cloud, no telemetry — your bots stay on your machine.
 
-If you've ever tried to write a bot prompt from scratch in a text box, you know the pain: no structure, no validation, no way to manage multiple bots, no idea why the bot keeps breaking character. Bot Manager solves that.
+If you've ever tried to write a bot prompt from scratch in a text box, you know the pain: no structure, no validation, no way to manage variants, no idea why the LLM keeps breaking character. Bot Manager Desktop gives you a structured editor that produces clean, consistent prompts.
 
----
+<!-- ![Screenshot](docs/screenshot.png) -->
 
-## What it does
+## Download
 
-Bot Manager gives you a structured editor for everything that goes into a bot profile:
+**[Download the latest Windows installer (.msi)](https://github.com/stevejackhammer/bot-manager-desktop/releases/latest)**
 
-- **Characters** — name, appearance, personality, backstory, relationships, skills, story hooks, behavior rules, pet names, dialog examples
-- **World** — setting, scenario, canon anchors, triggers, supporting cast, lorebook, boundaries
-- **RP Rules** — global and per-character
-- **Progression Phases** — soft instructions for how the bot should evolve over the course of a conversation
-
-When you're ready, export to Markdown, YAML, or JSON — formatted for your target platform.
-
-### Key features
-
-- **Variants** — maintain multiple versions of a bot (different scenarios, alternate personalities) without duplicating everything
-- **Consistency checker** — flags structural issues and patterns that confuse LLMs before you export
-- **Mask Sections** — binary-search tool for isolating content that triggers platform policy violations without losing your data
-- **Image management** — upload and manage bot profile images
-- **CAPS_KEYS mode** — renders field labels as `UPPER_SNAKE_CASE` in markdown output, which some LLMs respond to more reliably
-- **Import/Export** — move bots between machines via JSON with full schema validation
+No install prerequisites — just download, run, and start building bots.
 
 ---
 
-## Built with
+## Features
 
-- [Tauri 2](https://tauri.app/) — Rust-backed desktop runtime (Windows, macOS, Linux)
-- [Vue 3](https://vuejs.org/) + [Vuetify 4](https://vuetifyjs.com/) — UI
-- [Pinia](https://pinia.vuejs.org/) — state management
-- [Vite 7](https://vite.dev/) — build tooling
+**Structured bot editor** — Every aspect of a bot profile has its own section: characters, world-building, scenario, RP rules, boundaries, and more. Navigate the tree, fill in what matters, skip what doesn't.
+
+**Characters** — Full profiles with appearance, personality, backstory, relationships, skills, behavior rules, dialog examples, pet names, and progression phases. As many characters per bot as you need.
+
+**Variants** — Maintain alternate versions of a bot (different scenarios, tonal shifts, tweaked personalities) without duplicating everything. A variant stores only what differs from the base.
+
+**Progression Phases** — Soft instructions that tell the LLM how the character should evolve over the course of a conversation. Phase shifts, narrative shifts, tone shifts — with configurable windows.
+
+**Copy Station** — One-click export to clipboard, field by field, formatted for PolyBuzz. Supports Markdown, YAML, and JSON output. CAPS_KEYS mode for LLMs that respond better to uppercase labels.
+
+**Mask Sections** — Binary-search tool for isolating content that triggers platform policy violations. Mask a section, re-upload, check if the flag clears. No data is changed — just temporarily hidden from the export.
+
+**Consistency checker** — Flags structural issues before you export: orphaned relationship references, duplicate progression phases, dialog speakers that don't match the cast, and more.
+
+**Lean schema** — Only name, intro, and greeting are required. Everything else is optional. Fill in what matters to your story — empty fields are automatically stripped from the export so they don't dilute the LLM's attention.
+
+**Import/Export** — Move bots between machines via JSON. Full schema validation on import.
+
+**Image management** — Upload and manage bot profile images alongside the profile data.
+
+---
+
+## How it works
+
+You build a bot as a structured tree of sections. When you're ready to publish, open the Copy Station, copy each field to your clipboard, and paste it into PolyBuzz's form. The app handles formatting, empty-field stripping, and variant merging — you just paste.
+
+Empty fields are intentionally omitted from exports. An early discovery: exporting empty appearance fields (e.g. `Hair Color:`, `Eye Color:`) caused the LLM to ignore the values that *were* filled in. Removing the empties made the specified values rock solid. The practical rule: fill in a field only if it matters to your story.
+
+---
+
+## Data storage
+
+Bots are stored as local JSON files:
+
+| OS      | Path |
+|---------|------|
+| Windows | `%LOCALAPPDATA%\com.dirk.bot-manager-desktop\Bot Manager Desktop\bots\` |
+
+Each bot is a folder containing `bot.json` and any associated images. Everything stays on your machine.
 
 ---
 
@@ -44,42 +65,37 @@ When you're ready, export to Markdown, YAML, or JSON — formatted for your targ
 - [Node.js](https://nodejs.org/) 20+
 - [pnpm](https://pnpm.io/) — `npm install -g pnpm`
 - [Rust](https://www.rust-lang.org/tools/install) (stable toolchain)
-- Tauri prerequisites for your OS — see [Tauri Prerequisites](https://tauri.app/start/prerequisites/)
+- Tauri prerequisites — see [Tauri v2 Prerequisites](https://tauri.app/start/prerequisites/)
 
 ### Development
 
 ```bash
 pnpm install
-pnpm run tauri:dev
+pnpm tauri dev
 ```
 
 ### Production build
 
 ```bash
-pnpm run tauri:build
+pnpm tauri build
 ```
 
-Output is in `src-tauri/target/release/bundle/`.
+The MSI installer is output to `src-tauri/target/release/bundle/msi/`.
 
 ---
 
-## Data storage
+## Built with
 
-Bots are stored locally at:
-
-| OS      | Path |
-|---------|------|
-| Windows | `%APPDATA%\Bot Manager\bots\` |
-| macOS   | `~/Library/Application Support/Bot Manager/bots/` |
-| Linux   | `~/.local/share/Bot Manager/bots/` |
-
-Each bot is a folder containing `bot.json` and any associated images. No accounts, no cloud, no telemetry.
+- [Tauri 2](https://tauri.app/) — Rust-backed desktop runtime
+- [Vue 3](https://vuejs.org/) + [Vuetify](https://vuetifyjs.com/) — UI framework
+- [Pinia](https://pinia.vuejs.org/) — state management
+- [Vite](https://vite.dev/) — build tooling
 
 ---
 
-## Status
+## Contributing
 
-Actively used and developed. Expect rough edges — this started as a personal tool and has grown from there. Bug reports and PRs welcome.
+Bug reports and feature requests are welcome — [open an issue](https://github.com/stevejackhammer/bot-manager-desktop/issues). If you want to submit a PR, open an issue first to discuss the change.
 
 ---
 
