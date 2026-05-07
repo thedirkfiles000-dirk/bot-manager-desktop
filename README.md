@@ -8,7 +8,7 @@ If you've ever tried to write a bot prompt from scratch in a text box, you know 
 
 ## Download
 
-**[Download the latest Windows installer (.msi)](https://github.com/thedirkfiles-000/bot-manager-desktop/releases/latest)**
+**[Download the latest Windows installer (.msi)](https://github.com/thedirkfiles000-dirk/bot-manager-desktop/releases/latest)**
 
 No install prerequisites — just download, run, and start building bots.
 
