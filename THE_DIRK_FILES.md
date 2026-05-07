@@ -40,7 +40,7 @@ American anatomical terms fail both the upload filter (scan on save) and the gen
 
 **Density/proximity scoring, not keyword matching.**
 
-PB's filter system is a bit of a mysery. It can check the content of your Background or Greeting immediately while trying to save and refuse to save the bot. Or it will save the bot, and then later declare a violation. There seem to be two filter at work.
+PB's filter system is a bit of a mysery. It can check the content of your Background or Greeting immediately while trying to save and refuse to save the bot. Or it will save the bot, and then later declare a violation. There seem to be two filters at work.
 
 1. **Upload filter** — scans the text inside the form boxes (Intro, Greeting, Background, Dialog Examples)
 2. **Generation filter** — scans the bot after it has been saved
