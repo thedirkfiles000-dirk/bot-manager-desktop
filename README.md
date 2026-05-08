@@ -30,7 +30,7 @@ No install prerequisites — just download, run, and start building bots.
 
 **Consistency checker** — Flags structural issues before you export: orphaned relationship references, duplicate progression phases, dialog speakers that don't match the cast, and more.
 
-**Lean schema** — Only name, intro, and greeting are required. Everything else is optional. Fill in what matters to your story — empty fields are automatically stripped from the export so they don't dilute the LLM's attention.
+**Lean schema** — Only name, intro, and greeting are required. Everything else is optional. Fill in what matters to your story — empty fields are automatically stripped from the export so they don't dilute the LLM's attention. If you're interested in the full schema structure, you can find it in the src/assets folder.
 
 **Import/Export** — Move bots between machines via JSON. Full schema validation on import.
 
