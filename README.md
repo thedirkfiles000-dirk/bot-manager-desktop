@@ -18,7 +18,7 @@ No install prerequisites — just download, run, and start building bots.
 
 **Structured bot editor** — Every aspect of a bot profile has its own section: characters, world-building, scenario, RP rules, boundaries, and more. Navigate the tree, fill in what matters, skip what doesn't.
 
-**Characters** — Full profiles with appearance, personality, backstory, relationships, skills, behavior rules, dialog examples, pet names, and progression phases. As many characters per bot as you need.
+**Characters** — Full profiles with appearance, personality, backstory, relationships, skills, behavior rules, dialog examples, pet names, and progression phases. As many characters per bot as you need, subject to space limitations imposed by PolyBuzz. 
 
 **Variants** — Maintain alternate versions of a bot (different scenarios, tonal shifts, tweaked personalities) without duplicating everything. A variant stores only what differs from the base.
 
@@ -30,7 +30,7 @@ No install prerequisites — just download, run, and start building bots.
 
 **Consistency checker** — Flags structural issues before you export: orphaned relationship references, duplicate progression phases, dialog speakers that don't match the cast, and more.
 
-**Lean schema** — Only name, intro, and greeting are required. Everything else is optional. Fill in what matters to your story — empty fields are automatically stripped from the export so they don't dilute the LLM's attention. If you're interested in the full schema structure, you can find it in the src/assets folder.
+**Lean schema** — Only name, intro, and greeting are required. Everything else is optional. Fill in what matters to your story — empty fields are automatically stripped from the export so they don't dilute the LLM's attention. If you're interested in the full schema structure, you can find it in the src/assets folder. See scheme-example.json at the project root for an example of what a filled out bot looks like.
 
 **Import/Export** — Move bots between machines via JSON. Full schema validation on import.
 
