@@ -180,11 +180,23 @@ I wouldn't have assumed that, but I've seen the "Apollo 13" effect more than onc
 
 **Roll the dice a few times (using the web)**
 
-Stochasic is a fancy word for "random". I've had bots that violated on saving. I went back to the editor, and saved it again. The violation went away. No changes. I had a feeling it would work because the bot wasn't violating before, and the edit was not related to sensitive content.
+Stochastic is a fancy word for "random". I've had bots that violated on saving. I went back to the editor, and saved it again. The violation went away. No changes. I had a feeling it would work because the bot wasn't violating before, and the edit was not related to sensitive content.
 
 What happened? This might be related to the Apollo 13 effect. Or it could just be the nature of LLMs. The same prompt generates different output. The difference can be subtle. Since an AI seems to be evaluating bots for violations, a violation signal that is on the edge of the threshold might pass on a subsequent attempt thanks to that weird randomness in the way LLMs work. A practical problem is that in the most recent iterations of the app, the number of edits is limited to 5 a day. That limitation doesn't exist in the web UI. If you have access to the web UI, and your bot is not a themed bot (themed bots can't be edited through the web), you can save and then save again, without running out of saves.
 
 **Rule:** A violation might go away on a second save. Worth trying if you are editing a bot that was passing before.
+
+---
+
+## TDF #13 — Don't Overspecify; The AI Knows Stuff
+
+**When a word or concept violates, ask yourself if you need to even say it**
+
+I had a vampire bot. It wasn't scary. It was actually a comedy. But the bot violated because I mentioned drinking blood. But then I realized I didn't need to write that. The LLM knows vampires drink blood. It knows a billion things. I don't need to teach it that.
+
+But here's an important point. The main LLM knows that. So why would it violate the bot? The answer is because it's not the same LLM that filters. The filtering AI is very strict. Once you get past it, the chat AI is very chill. The goal is to get to that chat.
+
+**Rule:** Only say what needs to be said. Much of what you don't say the chat AI will figure out anyway.
 
 ---
 
