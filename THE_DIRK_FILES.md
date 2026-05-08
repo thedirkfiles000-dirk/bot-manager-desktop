@@ -8,6 +8,8 @@ This document captures hard-won knowledge about the PolyBuzz platform — how th
 
 Entries are numbered in no particular order. The platform is also a moving target. Things that were once true might not be true today. 
 
+**Note:** I use AI and LLM interchangeably. For the purposes of this document, they're the same thing most of the time.
+
 ---
 
 ## TDF #1 — Dialog vs Background
@@ -192,9 +194,9 @@ What happened? This might be related to the Apollo 13 effect. Or it could just b
 
 **When a word or concept violates, ask yourself if you need to even say it**
 
-I had a vampire bot. It wasn't scary. It was actually a comedy. But the bot violated because I mentioned drinking blood. But then I realized I didn't need to write that. The LLM knows vampires drink blood. It knows a billion things. I don't need to teach it that.
+I had a vampire bot. It wasn't scary. It was actually a comedy. But the bot violated because I mentioned drinking blood. Then I realized I didn't need to write that. The LLM knows vampires drink blood. It knows a billion things. I don't need to teach it that.
 
-But here's an important point. The main LLM knows that. So why would it violate the bot? The answer is because it's not the same LLM that filters. The filtering AI is very strict. Once you get past it, the chat AI is very chill. The goal is to get to that chat.
+Here's an important point. If the LLM knows that, why would it violate the bot because of it? The answer is because it's not the same LLM that filters. The filtering AI is very strict. Once you get past it, the chat AI is very chill. The goal is to get to that chat.
 
 **Rule:** Only say what needs to be said. Much of what you don't say the chat AI will figure out anyway.
 
