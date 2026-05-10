@@ -40,22 +40,51 @@ American anatomical terms fail both the upload filter (scan on save) and the gen
 
 ## TDF #3 — The Filter System
 
-**Density/proximity scoring, not keyword matching.**
+**The filter is two levels, not two filters. The first is fast and can be fooled. The second is slow and can't.**
 
-PB's filter system is a bit of a mysery. It can check the content of your Background or Greeting immediately while trying to save and refuse to save the bot. Or it will save the bot, and then later declare a violation. There seem to be two filters at work.
+PB's content moderation runs in two levels, both of which can land you in trouble. They're not separate systems with different rules — they're two passes at the same problem with different appetites and different timing. Both have to clear before a bot is actually safe.
 
-1. **Upload filter** — scans the text inside the form boxes (Intro, Greeting, Background, Dialog Examples)
-2. **Generation filter** — scans the bot after it has been saved
+**Level 1 — Save-time, fast, dilutable**
 
-The Upload Filter is fast. It's likely a straight-up banned word list. The Generation Filter takes time and doesn't declare something specific, merely that the Background (or whatever) is unacceptable. That the bot is already saved and the detection takes real time to complete strongly suggests that the scan happens on the bot that has been post-processed and save into PolyBuzz's database. The real-time delay suggests that it is an AI-driven process. The filter "reads" your bot and generates signals about what the character and story are about. Those signals are measured, and if an inappropriate signal is too strong, you get the violation. 
+When you click save, PB calls a moderation endpoint on each form field independently. The save *waits* for the result; if any field comes back as a fail, the save is rejected and you see the violation immediately in the editor. From your perspective it behaves synchronously even though under the hood it's a network call.
 
-But because the processing happens holistically on a bot in whatever storage structure PB uses, it might not be possible to point at a word and say, that's the problem. It's a general sense of the bot that is causing a violation, not just a naughty word.
+This level is fast because it runs a semantic classifier on each field on its own. It's NOT a banned word list — same word in different contexts produces different results. And critically, its attention can be *diluted*. A flagged phrase that fails on a near-empty field will pass on a long, busy field with the same phrase tucked at the end. The classifier reads the whole field; the bigger the surrounding signal, the less weight any individual phrase carries.
+
+In practice: a forbidden phrase in a 200-character greeting gets caught. The same phrase appended to a 7000-character background passes. Same word, same field type — different result, just because of context size.
+
+This is exploitable, but don't get cocky. Level 2 is waiting.
+
+**Level 2 — Post-save, slow, deeper**
+
+Once a save passes Level 1, the bot is already saved and visible. Then, somewhere in PB's backend, a deeper review runs. We don't know exactly what it looks at, how it's invoked, or how long it queues — but it takes minutes (sometimes longer), it hits things Level 1 missed (especially anything that survived by dilution), and it's the source of post-publish shadowbans and "later violation" states.
+
+Level 2 itself appears to have at least two severity tiers:
+
+- **Soft** — the bot is quietly removed from search, but no formal violation flag. `opStatus` stays normal. The editor doesn't warn you. The only outward signal is that the bot has stopped showing up in search results.
+- **Hard** — a formal violation flag, the same red-flag state you'd see in the editor on a Level 1 fail. `opStatus` flips to violation.
+
+So step 2 isn't a single binary check; it's at least two graduated responses, possibly more we haven't catalogued.
+
+This is also why the *creator experience* of Level 2 is so different from Level 1. Level 1 is a call the app makes and waits on — when it returns, the editor can show you the result inside 350 milliseconds. Level 2 can't be called that way. Minutes of latency (probably mostly time spent in a queue) is too long for any UI to hold a save action open. So the check fires silently in the background after the save returns, and you find out by going to look. The asymmetry isn't an oversight; it's forced by the timing — there's no callback the editor can wait on.
+
+That means *every* Level 2 verdict is creator-initiated to discover:
+
+- Refresh the bot card and watch for a violation flag to appear
+- Open the bot card and check whether it's shareable
+- Search by the bot's CID and see if it shows up in results
+- Watch the CP delta (see TDF #9)
+
+The system can't push the answer to you the way Level 1 does. You have to go fetch it.
+
+Level 2 also tells you less than Level 1 even when you do go looking. The save-time check identifies the failing field clearly; the async review's verdict, when it shows up at all, is at most a list of failed field IDs — never which words or themes specifically tipped the score. You get "Background failed" but not "this paragraph is the problem."
+
+**The trap:** passing Level 1 isn't passing. People hit save, see no editor error, assume they're clean, and move on. Minutes later the bot is shadowbanned or violating and they have no idea why, because the editor said yes.
 
 **Reverse Jenga technique:** If a bot is flagged and you can't isolate the trigger, remove content in chunks and re-save. Eventually, you'll remove something and the bot won't fall down (hence the "Reverse Jenga"). Each removal resets the cached score. Binary-search the offending field by halving the content until the flag disappears — the trigger is in the half you removed. Then look at that "zone" and see if adjusting vocabulary or rewriting the sentences can lower the signal that is causing the trouble.
 
 Bot Manager includes a masking tool that manages this process.
 
-**Rule:** The filter is a scoring system that works on chunks of the content together. Manage density, not just individual words.
+**Rule:** A passing save is half a verdict. Watch search visibility and your CP delta (see TDF #9) before declaring an edit clean. The first level is fast feedback; the second level is the truth.
 
 ---
 
@@ -199,6 +228,28 @@ I had a vampire bot. It wasn't scary. It was actually a comedy. But the bot viol
 Here's an important point. If the LLM knows that, why would it violate the bot because of it? The answer is because it's not the same LLM that filters. The filtering AI is very strict. Once you get past it, the chat AI is very chill. The goal is to get to that chat.
 
 **Rule:** Only say what needs to be said. Much of what you don't say the chat AI will figure out anyway.
+
+---
+
+## TDF #14 — The App is the Messenger
+
+**The behavior you see isn't shipped in the app. It's served from PB's backend.**
+
+This trips up a lot of people. "I didn't update the app, why is it acting differently?" The answer is that the app barely matters. The app sends requests and renders responses. Almost everything that determines how PolyBuzz behaves — the filter, the LLM, the ranking, the search results, the boost decisions — runs on PolyBuzz's servers. They can change any of it without releasing an app update, without notifying anyone, and without you noticing immediately.
+
+If PB swapped one LLM model for another tomorrow, the app would not change in any visible way. Your bots would just start chatting slightly differently. Same UI, same buttons, same fields — different brain on the other end of the wire.
+
+This isn't unique to PB. It's how the web works, and it's how it's always worked. Web apps update server-side constantly. Mobile apps that connect to a backend — banking, streaming, social, AI tools — all work the same way: most of what you experience comes from the server, not from the install on your phone. PB is no different. The only twist with an AI platform is that the "server-side change" can include swapping out the actual intelligence the app is talking to.
+
+The ironic part: people sometimes report behavior shifts during periods when the app version is genuinely stable. They're not wrong. The app being stable doesn't mean *anything* is stable, because the app isn't where the behavior lives.
+
+**Practical implications:**
+- Resist the urge to blame the app version. It's almost certainly not the cause of a behavior change.
+- Don't expect patch notes. Server-side changes don't ship with release notes — you only see them as bot output, ranking shifts, or filter results that didn't behave that way last week.
+- When something feels different, it probably is. But the change was made somewhere you can't see, and there's nothing in the app that would have told you.
+- The only way to characterize a server-side change is to compare across time. Run the same prompts now and a week from now; that's your only diagnostic.
+
+**Rule:** The app is a messenger. Almost everything you experience as "PolyBuzz" lives on their servers. When behavior shifts, look there — even though you can't see it.
 
 ---
 
