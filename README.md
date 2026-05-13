@@ -1,5 +1,7 @@
 # Bot Manager Desktop
 
+[See The Dirk Files (https://github.com/thedirkfiles000-dirk/bot-manager-desktop/blob/main/THE_DIRK_FILES.md) for collected hints and tips about the platform]
+
 A free, open-source desktop app for building roleplay chatbot profiles for **PolyBuzz**. No accounts, no cloud, no telemetry — your bots stay on your machine.
 
 If you've ever tried to write a bot prompt from scratch in a text box, you know the pain: no structure, no validation, no way to manage variants, no idea why the LLM keeps breaking character. Bot Manager Desktop gives you a structured editor that produces clean, consistent prompts.
