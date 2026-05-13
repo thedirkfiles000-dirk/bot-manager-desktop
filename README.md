@@ -1,6 +1,6 @@
 # Bot Manager Desktop
 
-*(See [The Dirk Files](https://github.com/thedirkfiles000-dirk/bot-manager-desktop/blob/main/THE_DIRK_FILES.md) for collected hints and tips about the platform.)*
+*(See [The Dirk Files](https://github.com/thedirkfiles000-dirk/bot-manager-desktop/blob/main/THE_DIRK_FILES.md) for collected hints and tips about the **PolyBuzz** platform.)*
 
 A free, open-source desktop app for building roleplay chatbot profiles for **PolyBuzz**. No accounts, no cloud, no telemetry — your bots stay on your machine.
 
