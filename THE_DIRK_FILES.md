@@ -90,13 +90,17 @@ Bot Manager includes a masking tool that manages this process.
 
 ## TDF #4 — Boosting
 
-**A boost is a platform audition, not a guarantee.**
+**A boost might be a mirage.**
 
-This is very speculative, but it makes sense. When Search lists bots in the App (not the web), some bots will have an orange up-arrow in the corner of the entry. That is a "boosted" bot. PB decides (once a day it seems [*ed* I've seen a boost applied immediately after saving a major edit]) to boost certain bots. PB temporarily promotes it to a wider audience. The boost flag persists approximately 48 hours, though I've seen longer. Whether that exposure converts to followers and ongoing engagement depends on sustained conversation metrics during the boost window — users who have long conversations, not just users who open and close. Conversions likely matter too (that is, of everyone who engaged, a percentage decided to add the bot to their collection - that action is a "conversion" in web-speak). Think of boosting as an audition. The boosted bot is being tested to see if it resonates. If it does, you can surmise that the bot will retain some favored status.
+This is very speculative, but boosting seems odd. Your bot is "boosted" when it shows that little orange up-arrow in the listing in the app. Note that listing bots in the web doesn't show boosts. But "boosting" is what the community calls it. I've not see it described in any PolyBuzz document. And here's the weird thing — that marker isn't always shown. I can search for the bot by CID, and it shows boosted. But then I search using a word in the Intro, and in the search listing, the boost doesn't show. Or weirder yet, maybe it shows, but if I play with the filter and sort options on the search panel, without actually doing a new search, the boost marker comes and goes. 
 
-Perhaps creators are also ranked, but that's speculative.
+I've seen it. I don't know why it does that. Changing the order of the search results shouldn't cause a round trip to the server for fresh data. If so, it's the app deciding to show the boost marker. How does that make sense?
 
-**Rule:** Boosts get your bot in front of an audience. The audience decides the rest. Engagement depth and conversions during the boost window probably matters more than raw traffic.
+Unless the app is just sprinkling boost markers for funsies. 
+
+At creator level 5 and above, new bots are given increased visibility for 48 hours. That doesn't show on the app as a boost marker. That seems to be a different thing.
+
+**Rule:** Don't get too excited if a bot shows that orange arrow boost marker. This is an open question for me.
 
 ---
 
