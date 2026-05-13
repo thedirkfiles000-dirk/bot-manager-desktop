@@ -167,15 +167,15 @@ When you save a bot, two things happen:
 
 **Signal 2 — Creator points**: A high quality bot earns 30 creator points. When you edit and save a high quality bot, you are awarded +10 points immediately. The remaining +20 is held back and awarded only after the shadowban check completes and passes. If the check fails, you stay at +10. (A straight-up violation means you don't get the +10 either, but we're talking shadowbans here.)
 
-**The trap:** Checking search immediately after a save hits a window where the check hasn't completed yet. The bot appears in the save, and the temptation is to declare that bot as not shadowbanned, and maybe keep editing. Minutes later it drops from search. Creators who don't wait for the full CP delta end up chasing phantoms — undoing clean edits, making random changes, and concluding the filter is broken or random.
+**The trap:** Checking search immediately after a save hits a window where the check hasn't completed yet. The bot appears in the search list, and the temptation is to declare that bot as not shadowbanned, and maybe keep editing. Minutes later it drops from search. Creators who don't wait for the full CP delta end up chasing phantoms — undoing clean edits, making random changes, and concluding the filter is broken or random.
 
 The bot appearing and disappearing seemingly independently of your edits is a timing problem, not a filter problem. The signals aren't synchronized with your edit cadence.
 
 **Correct workflow:**
-1. Save the edit
-2. Wait for the CP delta to settle — not just +10, but the full +30
-3. Confirm search visibility *after* the full CP delta
-4. Only then declare the edit clean or flagged
+1. Save the edit. The bot is searchable. Your CP went up by +10.
+2. Alternate checking your CP and performing a CID search every 10 seconds.
+3. If the CP goes up to +30, your bot is not shadowbanned.
+4. If the CP stays steady but the bot is no longer being listed in search, you've been shadowbanned. Stop cycling and go back to fix the bot.
 
 **Rule:** Both signals must confirm. Search alone is not enough. If you haven't seen the +30 CP, you haven't seen the result.
 
