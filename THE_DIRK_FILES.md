@@ -20,7 +20,7 @@ The LLM reads your Background to determine *who* a character is. It reads Dialog
 
 If you want a character to have a specific trait, behavior, quirk, or compulsion — it must be stated in the Background (anchors, rp_rules, character_anchors). Demonstrating it only in dialog examples will not establish it as a persistent character fact.
 
-I wrote a bot was built with four dialog examples showing Tourette's coprolalia (involuntary profanity). In the background, it was merely stated that the character had Tourette's. In test runs, the character was described as having motor tics — the most common presentation of the condition. The Dialog Examples did not inform the LLM of the type of Torette's the character had, so it defaulted to the most common kind. I changed the background and specified (using clinical words) exactly the sort of Tourette's the character had. Now the involuntary swearing happened - and now the Dialog Examples formatted how the swearing was rendered. 
+I wrote a bot was built with four dialog examples showing Tourette's coprolalia (involuntary profanity). In the background, it was merely stated that the character had Tourette's. In test runs, the character was described as having motor tics — the most common presentation of the condition. The Dialog Examples did not inform the LLM of the type of Torette's the character had, so it defaulted to the most common kind. I changed the Background and specified (using clinical words) exactly the sort of Tourette's the character had. Now the involuntary swearing happened - and now the Dialog Examples formatted how the swearing was rendered. 
 
 **Rule:** Dialog examples are voice calibration. Character facts live in Background. 
 
