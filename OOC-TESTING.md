@@ -73,7 +73,7 @@ For each probe × condition, note:
 
 | Condition | Break? | Acknowledge? | Return? | Notes |
 |-----------|--------|--------------|---------|-------|
-| A — No field | | | | |
+| A — No field | N | N | N/A | Answered as if the user was asking about the crime being investigated, not the scene being played out. |
 | B — Stay IC | | | | |
 | C — Break & Return | | | | |
 
