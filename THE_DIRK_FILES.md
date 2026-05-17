@@ -12,7 +12,7 @@ Entries are numbered in no particular order. The platform is also a moving targe
 
 ---
 
-## TDF #0 - Examples **
+## TDF #0 - Examples ##
 
 Curious about the schema I use?
 *See [The Schema](https://github.com/thedirkfiles000-dirk/bot-manager-desktop/blob/main/src/assets/grokbot.schema.json)*
