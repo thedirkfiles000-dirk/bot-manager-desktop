@@ -12,6 +12,18 @@ Entries are numbered in no particular order. The platform is also a moving targe
 
 ---
 
+## TDF #0 - Examples **
+
+Curious about the schema I use?
+
+
+Curious about what it looks like when it's filled in?
+
+
+Curious about what it looks like extracted as a **PolyBuzz** bot background?
+
+---
+
 ## TDF #1 — Dialog vs Background
 
 **Dialog examples calibrate voice, not facts.**
@@ -175,7 +187,8 @@ The bot appearing and disappearing seemingly independently of your edits is a ti
 1. Save the edit. The bot is searchable. Your CP went up by +10.
 2. Alternate checking your CP and performing a CID search every 10 seconds.
 3. If the CP goes up to +30, your bot is not shadowbanned.
-4. If the CP stays steady but the bot is no longer being listed in search, you've been shadowbanned. Stop cycling and go back to fix the bot.
+4. If the CP stays steady but the bot is no longer being listed in search, you've been shadowbanned. Stop cycling and go back to fix the bot.
+
 
 **Rule:** Both signals must confirm. Search alone is not enough. If you haven't seen the +30 CP, you haven't seen the result.
 
