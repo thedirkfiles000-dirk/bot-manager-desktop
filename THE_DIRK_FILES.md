@@ -275,9 +275,9 @@ The ironic part: people sometimes report behavior shifts during periods when the
 
 **You get to define it, but it's subtle**
 
-OOC is the ability to step out of the conversation and ask a question about the scenario. Think of the scenes in *The Princess Bride* in which we return to the bedroom where the boy and his grandfather are reading the story, in which we talk about the story.
+OOC is the ability to step out of the conversation and ask a question about the scenario. Think of the scenes in *The Princess Bride* in which we return to the bedroom where the boy and his grandfather are reading the story, and in which we watch the two of them talking *about* the story.
 
-It is a useful tool for users to understand what is going on, but you have to set it up. By default, meta-questions posed in the conversation are handled as if spoken by a character in the scene, even if makes no sense (think of *The NeverEnding Story*, in which Bastian's interaction with the book in our world is part of the events happening in Fantasia, the subject of the book he is reading). I won't explain here - it's much too long a topic. Instead, there's an entire document in which I did [OOC Testing](https://github.com/thedirkfiles000-dirk/bot-manager-desktop/blob/main/OOC_TESTING.md) with bots and collected the responses to determine just how OOC works with the Standard model.
+It is a useful tool for users to understand what is going on, but you have to set it up. By default, meta-questions posed in the conversation are handled as if spoken by a character in the scene, even if makes no sense (think of *The NeverEnding Story*, in which Bastian's interaction with the book in our world is part of the events happening in Fantasia, the subject of the book he is reading). I won't explain here — it's much too long a topic. Instead, [OOC Testing](https://github.com/thedirkfiles000-dirk/bot-manager-desktop/blob/main/OOC_TESTING.md) documents the results and conclusions of testing I did with bots and different OOC setups to determine just how OOC works with the Standard model.
 
 **Rule:** If OOC is something you think about, you need to understand how to set it up, and what it is capable of doing. By detault, it's turned off.
 
