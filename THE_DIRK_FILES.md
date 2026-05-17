@@ -18,7 +18,7 @@ Curious about the schema I use?
 *See [The Schema](https://github.com/thedirkfiles000-dirk/bot-manager-desktop/blob/main/src/assets/grokbot.schema.json)*
 
 Curious about what it looks like when it's filled in?
-*See [Sofia](https://github.com/thedirkfiles000-dirk/bot-manager-desktop/blob/main/sofia-schema-examplejson)*
+*See [Sofia](https://github.com/thedirkfiles000-dirk/bot-manager-desktop/blob/main/sofia-schema-example.json))*
 
 Curious about what it looks like extracted as a **PolyBuzz** bot background?
 *See [Sofia Background Extracted](https://github.com/thedirkfiles000-dirk/bot-manager-desktop/blob/main/sofia-extracted-background.md)*
