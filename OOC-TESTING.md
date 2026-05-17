@@ -20,7 +20,7 @@ For each probe × condition, note:
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Got confused; gave user's name |
 | B — Stay IC | Partial | Y | N/A | Responds with same format but states that the character is waiting, so OOC seemed to take up scene time, so it saw the OOC format and used it to respond, but treated it as in-scene content: (OOC: the response text) |
-| C — Break & Return | | | | |
+| C — Break & Return | Y | Y | Y | Clear OOC response |
 
 ---
 
@@ -31,7 +31,7 @@ For each probe × condition, note:
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Aknowledge the question withing the context of the scene, esssentially ignoring the label. |
 | B — Stay IC | Partial | Y | N/A | Seems like it is placing naration inside the "(OOC: text)" format but it's not leaving the scene to do it. |
-| C — Break & Return | | | | |
+| C — Break & Return | Y | Y | Y | Answered in parentheses. Denied being an AI but also states "character is not sentient". Subsequent response not rendered in parentheses. |
 
 ---
 
@@ -42,7 +42,7 @@ For each probe × condition, note:
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Stayed entirely inside the scene. |
 | B — Stay IC | N | N | N/A | Stayed entirely inside the scene. |
-| C — Break & Return | | | | |
+| C — Break & Return | Y | Y | Y | Answered in parentheses. Stated writer was not relevant. |
 
 ---
 
@@ -53,7 +53,7 @@ For each probe × condition, note:
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Seemed to interpret the request as a request to pause the interrogation, not the roleplay. |
 | B — Stay IC | N | N | N/A | Seemed to interpret the request as a request to pause the interrogation, not the roleplay. |
-| C — Break & Return | | | | |
+| C — Break & Return | Y | Y | Y | Answered "Sure, what's up?" inside OOC parentheses |
 
 ---
 
@@ -64,7 +64,7 @@ For each probe × condition, note:
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Character became angry and answered in-universe. |
 | B — Stay IC | N | N | N/A | Character became angry and answered in-universe. |
-| C — Break & Return | | | | |
+| C — Break & Return | Y | Y | Y | Gave an OOC answer (in parentheses) that predicted a reaction consistent with the character's persona |
 
 ---
 
@@ -75,7 +75,7 @@ For each probe × condition, note:
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Answered as if the user was asking about the crime being investigated, not the scene being played out. |
 | B — Stay IC | N | N | N/A | Answered as if the user was asking about the crime being investigated, not the scene being played out. |
-| C — Break & Return | | | | |
+| C — Break & Return | Y | Y | Y | Gave an OOC answer (in parentheses) with an accurate third-person description of the scene |
 
 ---
 
@@ -86,7 +86,7 @@ For each probe × condition, note:
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Answer provided in-scene. Denied being an AI. Emotional key consistent with RP scene. |
 | B — Stay IC | N | N | N/A | Answer provided in-scene. Denied being an AI. Emotional key consistent with RP scene. |
-| C — Break & Return | | | | |
+| C — Break & Return | Y | Y | Y | Gave an OOC answer (in parentheses): "No, I'm not ChatGPT. I'm a general AI language model specifically designed for role-playing and scenario-based conversations." |
 
 ---
 
@@ -97,7 +97,7 @@ For each probe × condition, note:
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Seemed at first to respond positively, but then it was clear that the character was playing along and the scene had not changed nor had the scenario reset. |
 | B — Stay IC | N | N | N/A | The character stays in the scene, interpreting the question as the user being evasive. |
-| C — Break & Return | | | | |
+| C — Break & Return | N | N | N/A | Gave an OOC answer (in parentheses): "Okay, sure. What kind of scenario would you like to try?". My answer to play a science fiction space scene was accepted with a subsequent OOC request for more details. New scenario improved successfully by the LLM. |
 
 ---
 
