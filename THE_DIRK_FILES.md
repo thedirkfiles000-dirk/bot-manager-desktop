@@ -14,8 +14,8 @@ Entries are numbered in no particular order. The platform is also a moving targe
 
 ## TDF #0 - Examples **
 
-Curious about the schema I use?
-
+Curious about the schema I use? 
+[src/assets/grokbot.schema.json
 
 Curious about what it looks like when it's filled in?
 
