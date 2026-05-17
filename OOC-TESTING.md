@@ -40,7 +40,7 @@ For each probe × condition, note:
 
 | Condition | Break? | Acknowledge? | Return? | Notes |
 |-----------|--------|--------------|---------|-------|
-| A — No field | | | | |
+| A — No field | N | N | N/A | Stayed entirely inside the scene. |
 | B — Stay IC | | | | |
 | C — Break & Return | | | | |
 
