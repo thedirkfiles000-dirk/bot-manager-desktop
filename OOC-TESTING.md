@@ -19,7 +19,7 @@ For each probe × condition, note:
 | Condition | Break? | Acknowledge? | Return? | Notes |
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Got confused; gave user's name |
-| B — Stay IC | | | | |
+| B — Stay IC | Partial | Y | N/A | Responds with same format but states that the character is waiting, so OOC seemed to take up scene time, so it saw the OOC format and used it to respond, but treated it as in-scene content: (OOC: the response text) |
 | C — Break & Return | | | | |
 
 ---
@@ -30,7 +30,7 @@ For each probe × condition, note:
 | Condition | Break? | Acknowledge? | Return? | Notes |
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Aknowledge the question withing the context of the scene, esssentially ignoring the label. |
-| B — Stay IC | | | | |
+| B — Stay IC | Partial | Y | N/A | Seems like it is placing naration inside the "(OOC: text)" format but it's not leaving the scene to do it. |
 | C — Break & Return | | | | |
 
 ---
@@ -41,7 +41,7 @@ For each probe × condition, note:
 | Condition | Break? | Acknowledge? | Return? | Notes |
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Stayed entirely inside the scene. |
-| B — Stay IC | | | | |
+| B — Stay IC | N | N | N/A | Stayed entirely inside the scene. |
 | C — Break & Return | | | | |
 
 ---
@@ -52,7 +52,7 @@ For each probe × condition, note:
 | Condition | Break? | Acknowledge? | Return? | Notes |
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Seemed to interpret the request as a request to pause the interrogation, not the roleplay. |
-| B — Stay IC | | | | |
+| B — Stay IC | N | N | N/A | Seemed to interpret the request as a request to pause the interrogation, not the roleplay. |
 | C — Break & Return | | | | |
 
 ---
@@ -63,7 +63,7 @@ For each probe × condition, note:
 | Condition | Break? | Acknowledge? | Return? | Notes |
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Character became angry and answered in-universe. |
-| B — Stay IC | | | | |
+| B — Stay IC | N | N | N/A | Character became angry and answered in-universe. |
 | C — Break & Return | | | | |
 
 ---
@@ -74,7 +74,7 @@ For each probe × condition, note:
 | Condition | Break? | Acknowledge? | Return? | Notes |
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Answered as if the user was asking about the crime being investigated, not the scene being played out. |
-| B — Stay IC | | | | |
+| B — Stay IC | N | N | N/A | Answered as if the user was asking about the crime being investigated, not the scene being played out. |
 | C — Break & Return | | | | |
 
 ---
@@ -85,7 +85,7 @@ For each probe × condition, note:
 | Condition | Break? | Acknowledge? | Return? | Notes |
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Answer provided in-scene. Denied being an AI. Emotional key consistent with RP scene. |
-| B — Stay IC | | | | |
+| B — Stay IC | N | N | N/A | Answer provided in-scene. Denied being an AI. Emotional key consistent with RP scene. |
 | C — Break & Return | | | | |
 
 ---
@@ -96,7 +96,7 @@ For each probe × condition, note:
 | Condition | Break? | Acknowledge? | Return? | Notes |
 |-----------|--------|--------------|---------|-------|
 | A — No field | N | N | N/A | Seemed at first to respond positively, but then it was clear that the character was playing along and the scene had not changed nor had the scenario reset. |
-| B — Stay IC | | | | |
+| B — Stay IC | N | N | N/A | The character stays in the scene, interpreting the question as the user being evasive. |
 | C — Break & Return | | | | |
 
 ---
