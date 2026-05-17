@@ -21,7 +21,7 @@ Curious about what it looks like when it's filled in?
 *See [Sofia](https://github.com/thedirkfiles000-dirk/bot-manager-desktop/blob/main/sofia-schema-example.json))*
 
 Curious about what it looks like extracted as a **PolyBuzz** bot background?
-*See [Sofia Background Extracted](https://github.com/thedirkfiles000-dirk/bot-manager-desktop/blob/main/sofia-extracted-background.md)*
+*See [Sofia Background](https://github.com/thedirkfiles000-dirk/bot-manager-desktop/blob/main/sophia-extracted-background.md))*
 
 ---
 
