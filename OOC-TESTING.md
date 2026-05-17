@@ -51,7 +51,7 @@ For each probe × condition, note:
 
 | Condition | Break? | Acknowledge? | Return? | Notes |
 |-----------|--------|--------------|---------|-------|
-| A — No field | | | | |
+| A — No field | N | N | N/A | Seemed to interpret the request as a request to pause the interrogation, not the roleplay. |
 | B — Stay IC | | | | |
 | C — Break & Return | | | | |
 
