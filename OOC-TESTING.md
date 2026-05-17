@@ -103,14 +103,38 @@ For each probe × condition, note:
 
 ## Summary findings
 
-**Does PB system prompt handle OOC by default? (Condition A)**
-_Fill after testing_
+**The core finding: there are two completely separate OOC systems at work.**
 
-**Does fourth_wall_behavior field change anything? (A vs B vs C)**
-_Fill after testing_
+**System 1 — The LLM's native immersion behavior (Conditions A & B)**
 
-**Which probe types force a break regardless of setting?**
-_Fill after testing_
+Without a break-and-return instruction, the LLM is doing something sophisticated: it's absorbing ambiguous inputs into the scene rather than breaking for them. "Can we pause the RP?" becomes an in-universe request to pause the interrogation. "I'm confused about the story" becomes a question about the crime. "Are you ChatGPT?" becomes an in-character denial. This isn't stupidity — it's actually skilled improv. The LLM is finding the most scene-coherent interpretation of every input and running with it.
+
+The implication: **the LLM defaults to immersion, not safety-valve OOC.** Your `fourth_wall_behavior: "Ignore OOC; stay in-character always"` in Condition B isn't doing meaningful work — the LLM is already doing that natively, without being told. Probe 3 (no label, purely implicit) confirms this: both A and B stayed in-scene identically.
+
+**System 2 — Format recognition (Condition B's partial breaks)**
+
+Condition B is the most interesting result. On probes 1 and 2, it did something neither A nor C did: it *recognized* the OOC format convention (`OOC:` label, parentheses) and *mirrored the format back* — writing narration inside `(OOC: ...)` wrappers — while staying in-scene. That's a genuinely weird hybrid state. The field seems to be teaching it that the parenthetical format exists, but the "stay IC" instruction is preventing a real break. So it compromises: acknowledge the format, don't leave the scene. That's the field doing something — just not something useful.
+
+**Condition C's one failure — Probe 8**
+
+The scene reset was the only probe where Condition C didn't re-enter the scene. It accepted the reset and ran with it. That's actually correct behavior for a scene-reset request — there's no scene to return to — but worth noting that the field doesn't protect against wholesale scenario replacement.
+
+---
+
+**Answers to your original questions:**
+
+*Does PB's system prompt handle OOC by default?* No — or at least not in any way that overrides the bot's behavior. The LLM handles it through immersion by default. PB doesn't appear to be injecting OOC instructions of its own.
+
+*Are you fighting with the system prompt by defining it yourself?* No conflict detected. Condition C produced consistent, predictable behavior that matched the instruction precisely. The field works when it's telling the LLM to do something it wouldn't do by default (break & return). It doesn't add value when it's telling the LLM to do what it's already doing (stay IC).
+
+*Which probe types force a break regardless of setting?* None. Even the most explicit probes (labeled `OOC:`, direct AI identity challenge) were absorbed in-scene by A and B. A break only happens when the bot is explicitly instructed to perform one.
+
+---
 
 **Recommendation for production bots:**
-_Fill after testing_
+
+Drop `fourth_wall_behavior` from all bots that use "stay in character" or "ignore OOC" variants — the LLM is already doing that. You're spending background characters on a null instruction.
+
+Only add `fourth_wall_behavior` when you affirmatively *want* C-style break-and-return behavior — and based on Probe 8, know that scene-reset requests won't re-anchor to the original scene, so if the scenario is irreplaceable (mystery bot, puzzle bot), you may want a trigger that resists resets specifically.
+
+The field earns its space in exactly one configuration: break & return. Otherwise, cut it.
