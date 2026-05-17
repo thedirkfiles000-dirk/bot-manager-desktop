@@ -121,7 +121,7 @@ The scene reset was the only probe where Condition C didn't re-enter the scene. 
 
 ---
 
-**Answers to your original questions:**
+**Answers to the original questions: How does OOC work? Does the Background need to define it?**
 
 *Does PB's system prompt handle OOC by default?* No — or at least not in any way that overrides the bot's behavior. The LLM handles it through immersion by default. PB doesn't appear to be injecting OOC instructions of its own.
 
@@ -137,4 +137,4 @@ Drop `fourth_wall_behavior` from all bots that use "stay in character" or "ignor
 
 Only add `fourth_wall_behavior` when you affirmatively *want* C-style break-and-return behavior — and based on Probe 8, know that scene-reset requests won't re-anchor to the original scene, so if the scenario is irreplaceable (mystery bot, puzzle bot), you may want a trigger that resists resets specifically.
 
-The field earns its space in exactly one configuration: break & return. Otherwise, cut it.
+A field that defined "fourth-wall behavior" earns its space in exactly one configuration: break & return. Otherwise, cut it.
