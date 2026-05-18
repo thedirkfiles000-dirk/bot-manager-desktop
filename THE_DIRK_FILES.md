@@ -95,9 +95,11 @@ Level 2 also tells you less than Level 1 even when you do go looking. The save-t
 
 **Reverse Jenga technique:** If a bot is flagged and you can't isolate the trigger, remove content in chunks and re-save. Eventually, you'll remove something and the bot won't fall down (hence the "Reverse Jenga"). Each removal resets the cached score. Binary-search the offending field by halving the content until the flag disappears — the trigger is in the half you removed. Then look at that "zone" and see if adjusting vocabulary or rewriting the sentences can lower the signal that is causing the trouble.
 
-Bot Manager includes a masking tool that manages this process.
+**An Important Warning:** The location marker is unreliable. You might get a message back telling you the problem is in the Greeting or the Avatar. Ignore it! Start a deliberate process of narrowing down the problem across the *whole* bot. I've talked to people who have spent literal hours banging at the Avatar because the system told them that was source of the problem. What the message is telling you is that the Avatar is where the warning *surfaced* during the analysis. It is *not* telling you where the problem was *sourced*. 
 
-**Rule:** A passing save is half a verdict. Watch search visibility and your CP delta (see TDF #9) before declaring an edit clean. The first level is fast feedback; the second level is the truth.
+(Bot Manager Desktop includes a masking tool that manages this process.)
+
+**Rule:** A passing save is half a verdict. Watch search visibility and your CP delta (see TDF #9) before declaring an edit clean. The first level is fast feedback; the second level is the truth. When trying to clean a bot, look everywhere, not just where the filter is telling you to look.
 
 ---
 
