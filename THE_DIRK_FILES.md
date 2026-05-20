@@ -285,5 +285,13 @@ It is a useful tool for users to understand what is going on, but you have to se
 
 ---
 
+## TDF #16 - Shadowbanned! (Or not?) ##
+
+An interesting quirk. As you know, shadowbanning is the way in which the reach of a bot whose themes are seen as skirting the edges of what is allowed is limited. If you search for that bot by name or CID, it does not appear. It won't appear as a suggestion on the "For You" tab of the Explore page. Essentially, the bot is gone unless you already have a link to it in your Collections page. But beside the search function, the app also has a Weekly Trending Rank page, listing the hot bots for the week. I found a bot that a specific user could not search for, but when that same user went to Weekly Trending Rank, it was there as #13. 
+
+**Rule:** You might want to peruse the various "Top Bot" lists. It might show you bots you would not otherwise see otherwise.
+
+---
+
 *The Dirk Files is maintained alongside Bot Manager Desktop.*
 *Last updated: May 2026*
