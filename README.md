@@ -6,6 +6,8 @@ A free, open-source desktop app for building roleplay chatbot profiles for **Pol
 
 If you've ever tried to write a bot prompt from scratch in a text box, you know the pain: no structure, no validation, no way to manage variants, no idea why the LLM keeps breaking character. Bot Manager Desktop gives you a structured editor that produces clean, consistent prompts.
 
+Note that Bot Manager Desktop is built around my schema. You probably have your opinions about what fields to use to describe your bot. If so, [Bot Manager (Kit Edition)](https://github.com/thedirkfiles000-dirk/bot-manager-kit) is for you.
+
 <!-- ![Screenshot](docs/screenshot.png) -->
 
 ## Download
