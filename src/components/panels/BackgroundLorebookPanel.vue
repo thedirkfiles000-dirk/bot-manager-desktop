@@ -1,4 +1,4 @@
-<!-- src/components/panels/BackgroundLorbookPanel.vue -->
+<!-- src/components/panels/BackgroundLorebookPanel.vue -->
 <template>
   <panel-wrapper title="Lorebook" subtitle="Keyword-keyed world facts. When a keyword surfaces in conversation, the associated content gives the LLM grounding. Keep this small — it's a prompt inclusion, not a database." :max-width="1200">
 
@@ -76,18 +76,18 @@ import PanelWrapper from "@/components/PanelWrapper.vue";
 import { ref, watch } from "vue";
 import { useVariantAnyField } from "@/composables/useVariantAnyField.ts";
 import { fieldPath } from "@/types/fieldPath";
-import type { LorbookEntry } from "@/types/botSchema";
+import type { LorebookEntry } from "@/types/botSchema";
 
-interface LorbookRow extends LorbookEntry {
+interface LorebookRow extends LorebookEntry {
   _key: string;
 }
 
-const entries = useVariantAnyField<LorbookEntry[]>(
+const entries = useVariantAnyField<LorebookEntry[]>(
   fieldPath("background.lorebook"),
   [],
 );
 
-const localEntries = ref<LorbookRow[]>([]);
+const localEntries = ref<LorebookRow[]>([]);
 
 watch(
   entries,
@@ -102,7 +102,7 @@ watch(
 
 const editorDialog = ref(false);
 const editingIndex = ref<number | null>(null);
-const editingEntry = ref<LorbookEntry>({ keyword: "", content: "" });
+const editingEntry = ref<LorebookEntry>({ keyword: "", content: "" });
 
 function openEditor(index: number | null) {
   editingIndex.value = index;
@@ -121,7 +121,7 @@ function closeEditor() {
 }
 
 function saveEditor() {
-  const { _key: _k, ...clean } = editingEntry.value as LorbookRow;
+  const { _key: _k, ...clean } = editingEntry.value as LorebookRow;
   if (editingIndex.value === null) {
     localEntries.value.push({ ...clean, _key: Date.now().toString() });
   } else {

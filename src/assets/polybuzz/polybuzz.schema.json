@@ -102,7 +102,7 @@
         },
         "lorebook": {
           "type": "array",
-          "items": { "$ref": "#/$defs/LorbookEntry" },
+          "items": { "$ref": "#/$defs/LorebookEntry" },
           "description": "Reference material. Listed last in canon — consulted on demand rather than primed."
         }
       }
@@ -149,7 +149,7 @@
       }
     },
 
-    "LorbookEntry": {
+    "LorebookEntry": {
       "type": "object",
       "required": ["keyword", "content"],
       "additionalProperties": false,

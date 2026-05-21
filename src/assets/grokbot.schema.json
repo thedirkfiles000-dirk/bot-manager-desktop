@@ -211,7 +211,7 @@
           "type": "array",
           "description": "Keyword-keyed world facts. Each entry is a noun/phrase the LLM should recall context for when the topic arises. Poor man's lorebook — small sets only.",
           "items": {
-            "$ref": "#/definitions/LorbookEntry"
+            "$ref": "#/definitions/LorebookEntry"
           }
         },
         "boundaries": {
@@ -669,7 +669,7 @@
       },
       "additionalProperties": false
     },
-    "LorbookEntry": {
+    "LorebookEntry": {
       "type": "object",
       "description": "A keyword-keyed world fact. When the keyword surfaces in conversation, the associated content gives the LLM grounding.",
       "required": ["keyword", "content"],

@@ -91,7 +91,7 @@ export interface GrokBotProfile {
     /**
      * Keyword-keyed world facts for LLM recall.
      */
-    lorebook?: LorbookEntry[];
+    lorebook?: LorebookEntry[];
     /**
      * The cast of characters. Full profiles embedded for self-contained bots.
      * May be empty if the scenario relies entirely on cohorts.
@@ -222,7 +222,7 @@ export interface CohortEntry {
    */
   surfacing_rules?: string[];
 }
-export interface LorbookEntry {
+export interface LorebookEntry {
   keyword: string;
   content: string;
 }

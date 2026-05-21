@@ -11,7 +11,7 @@ import BackgroundBoundariesPanel from "@/components/panels/BackgroundBoundariesP
 import BackgroundMetaPanel from "@/components/panels/BackgroundMetaPanel.vue";
 import BackgroundAnchorsPanel from "@/components/panels/BackgroundAnchorsPanel.vue";
 import BackgroundCohortPanel from "@/components/panels/BackgroundCohortPanel.vue";
-import BackgroundLorbookPanel from "@/components/panels/BackgroundLorbookPanel.vue";
+import BackgroundLorebookPanel from "@/components/panels/BackgroundLorebookPanel.vue";
 
 import CharacterBasicPanel from "@/components/panels/CharacterBasicPanel.vue";
 import CharacterAppearancePanel from "@/components/panels/CharacterAppearancePanel.vue";
@@ -288,7 +288,7 @@ export function buildFullTree(
           id: "bg-lorebook",
           title: "Lorebook",
           icon: "mdi-book-open-variant",
-          component: markRaw(BackgroundLorbookPanel),
+          component: markRaw(BackgroundLorebookPanel),
           subPaths: ["background.lorebook"],
         },
       ],
