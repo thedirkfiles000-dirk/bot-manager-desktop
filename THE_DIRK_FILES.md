@@ -23,7 +23,7 @@ Curious about what it looks like when it's filled in?
 Curious about what it looks like extracted as a **PolyBuzz** bot background?
 *See [Sofia Background](https://github.com/thedirkfiles000-dirk/bot-manager-desktop/blob/main/sophia-extracted-background.md)*
 
-Want to use an application like this with your own schema?
+Want to use an application that helps you build and manage bots using your own schema?
 *See [Bot Manager (Kit Edition)](https://github.com/thedirkfiles000-dirk/bot-manager-kit)*
 
 ---
