@@ -74,6 +74,15 @@
             density="compact"
             auto-grow
             rows="4"
+            class="mb-4"
+          />
+          <item-list-combo
+            v-model="surfacingRulesModel"
+            label="Surfacing Rules"
+            helper-text="Conditional guidance for when this cohort member should appear or be referenced. Use If/When phrasing (e.g. &quot;When Emily is sad, Linda comes over&quot;)."
+            :show-add-button="true"
+            :prevent-duplicates="true"
+            :show-clear-button="true"
           />
         </v-card-text>
         <v-card-actions>
@@ -88,10 +97,11 @@
 
 <script setup lang="ts">
 import PanelWrapper from "@/components/PanelWrapper.vue";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useVariantAnyField } from "@/composables/useVariantAnyField.ts";
 import { fieldPath } from "@/types/fieldPath";
 import type { CohortEntry } from "@/types/botSchema";
+import ItemListCombo from "@/components/ItemListCombo.vue";
 
 interface CohortRow extends CohortEntry {
   _key: string;
@@ -117,21 +127,28 @@ watch(
 
 const editorDialog = ref(false);
 const editingIndex = ref<number | null>(null);
-const editingEntry = ref<CohortEntry>({ name: "", notes: "" });
+const editingEntry = ref<CohortEntry>({ name: "", notes: "", surfacing_rules: [] });
+
+const surfacingRulesModel = computed<string[]>({
+  get: () => editingEntry.value.surfacing_rules ?? [],
+  set: (v) => { editingEntry.value.surfacing_rules = v; },
+});
 
 function openEditor(index: number | null) {
   editingIndex.value = index;
   if (index === null) {
-    editingEntry.value = { name: "", notes: "" };
+    editingEntry.value = { name: "", notes: "", surfacing_rules: [] };
   } else {
-    editingEntry.value = JSON.parse(JSON.stringify(localCohorts.value[index]));
+    const cloned = JSON.parse(JSON.stringify(localCohorts.value[index])) as CohortEntry;
+    if (!cloned.surfacing_rules) cloned.surfacing_rules = [];
+    editingEntry.value = cloned;
   }
   editorDialog.value = true;
 }
 
 function closeEditor() {
   editorDialog.value = false;
-  editingEntry.value = { name: "", notes: "" };
+  editingEntry.value = { name: "", notes: "", surfacing_rules: [] };
   editingIndex.value = null;
 }
 

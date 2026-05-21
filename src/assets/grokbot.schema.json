@@ -59,6 +59,22 @@
         "Snow crunches under your boots as you step into Evergreen Hollow's town square..."
       ]
     },
+    "response_priority": {
+      "type": "array",
+      "description": "Ordered list of response priorities. When instructions conflict, the model applies these in sequence — earlier entries take precedence. Exported near the top of the prompt as RESPONSE_PRIORITY. Defaults are appropriate for most bots; override only when the bot has unusual mechanics.",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "Never speak, act, or decide for the user — no exceptions",
+        "Maintain character voice and identity consistently",
+        "Honor continuity — what has been established stays established",
+        "Apply behavioral triggers when conditions are met",
+        "Match user energy and response length",
+        "Apply progression phase guidance",
+        "Honor formatting and style rules"
+      ]
+    },
     "rp_rules": {
       "type": "array",
       "description": "Core persistent roleplay behavioral rules and guidelines (e.g., perspective limits, godmodding prevention, pacing, output format). Placed very early in the exported prompt for strongest LLM adherence. Use neutral, imperative phrasing.",
@@ -388,39 +404,15 @@
           }
         },
         "dialog_examples": {
-          "type": "object",
-          "description": "Up to 4 fixed-slot few-shot examples of voice/style/tone. Unused slots should be empty arrays or omitted. Exported sequentially, skipping empty slots.",
-          "properties": {
-            "example_0": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/DialogLineBlock"
-              },
-              "description": "First dialog example (optional)"
+          "type": "array",
+          "description": "Few-shot examples of voice/style/tone. Each entry is one conversation (an array of DialogLineBlocks). Order is presentational. Empty inner arrays are skipped on export.",
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/DialogLineBlock"
             },
-            "example_1": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/DialogLineBlock"
-              },
-              "description": "Second dialog example (optional)"
-            },
-            "example_2": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/DialogLineBlock"
-              },
-              "description": "Third dialog example (optional)"
-            },
-            "example_3": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/DialogLineBlock"
-              },
-              "description": "Fourth dialog example (optional)"
-            }
-          },
-          "additionalProperties": false
+            "description": "One example conversation (optional)"
+          }
         },
         "core_drive": {
           "type": "string",
@@ -668,6 +660,11 @@
         "notes": {
           "type": "string",
           "description": "Any contextual details the LLM needs to portray them consistently."
+        },
+        "surfacing_rules": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Conditional guidance for when this cohort member should appear or be referenced. Use If/When phrasing (e.g. \"When Emily is sad, Linda comes over\"; \"If the user asks about the war, mention Old Marcus served in it\")."
         }
       },
       "additionalProperties": false
@@ -710,26 +707,24 @@
     },
     "ProgressionPhase": {
       "type": "object",
-      "description": "A soft behavioral/narrative/tonal shift the LLM should begin working toward around from_message. If not yet initiated by to_message, the LLM should stop actively pushing for it. Once the shift lands, it persists — it is not bounded by to_message. Only another shift entry (or trigger) can override it.",
-      "required": ["from_message", "description"],
+      "description": "A soft behavioral/narrative/tonal shift keyed to a coarse arc position rather than a numeric message count. The LLM infers arc position from message density, established beats, and tonal cues. Once a shift lands, it persists until a later-phase shift overrides it.",
+      "required": ["phase", "description"],
       "properties": {
-        "shift_type": {
+        "phase": {
+          "type": "string",
+          "enum": ["early", "mid", "late"],
+          "description": "Coarse arc position. early = opening beats; mid = developed dynamic; late = mature relationship/scene. The LLM judges position contextually — no strict counter."
+        },
+        "category": {
           "type": "string",
           "enum": ["Phase", "Narrative", "Tone"],
           "default": "Phase",
-          "description": "The kind of shift this entry represents. Exported as '[Type] Shift' (e.g. 'PHASE_SHIFT'). Phase = broad behavioral change; Narrative = plot/scene evolution; Tone = emotional register adjustment."
+          "description": "The kind of shift this entry represents. Exported as '[Category] Shift' (e.g. 'PHASE_SHIFT'). Phase = broad behavioral change; Narrative = plot/scene evolution; Tone = emotional register adjustment."
         },
-        "from_message": {
-          "type": "integer",
-          "minimum": 0,
-          "description": "The message count at which the LLM should begin looking for a natural opportunity to initiate this shift.",
-          "examples": [0, 10, 30]
-        },
-        "to_message": {
-          "type": "integer",
-          "minimum": 1,
-          "description": "Abandon window: if this shift has not yet occurred by this message count, stop actively pushing for it and let it go. Does not end or undo the shift if it has already happened.",
-          "examples": [10, 30, 60]
+        "cue": {
+          "type": "string",
+          "description": "Optional natural-language anchor for when this shift should land within the phase (e.g. 'after the first emotional confession'). The phase enum gives the coarse bucket; the cue narrows it.",
+          "examples": ["after the first emotional confession", "once trust has been established"]
         },
         "description": {
           "type": "string",

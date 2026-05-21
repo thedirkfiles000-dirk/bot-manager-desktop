@@ -1,62 +1,66 @@
 <!-- src/components/panels/CharacterDialogExamplesPanel.vue -->
 <template>
-  <panel-wrapper title="Dialog Examples" subtitle="Up to 4 few-shot examples of voice/style/tone (2–4 recommended). Empty slots are skipped on export." :max-width="1200">
+  <panel-wrapper title="Dialog Examples" subtitle="Few-shot examples of voice/style/tone. Add as many or as few as you need; 2–4 are usually enough, but more is fine. Empty examples are skipped on export." :max-width="1200">
 
-    <!-- Fixed 4 Example Cards -->
-    <v-row density="compact">
-      <v-col v-for="slotIdx in 4" :key="slotIdx" cols="12" md="6" lg="4">
+    <div class="d-flex justify-end mb-3">
+      <v-btn
+        color="primary"
+        size="small"
+        prepend-icon="mdi-plus"
+        @click="addExample"
+      >
+        Add Example
+      </v-btn>
+    </div>
+
+    <v-row v-if="examples.length" density="compact">
+      <v-col v-for="(ex, idx) in examples" :key="idx" cols="12" md="6" lg="4">
         <v-card
           variant="outlined"
-          :color="hasContent(slotIdx - 1) ? 'primary' : 'grey-darken-3'"
+          :color="ex.length > 0 ? 'primary' : 'grey-darken-3'"
           class="mb-4 h-100 d-flex flex-column"
         >
           <v-card-title class="text-subtitle-1 d-flex align-center">
-            Example {{ slotIdx }}
+            Example {{ idx + 1 }}
             <override-badges
-              :path="`${charPrefix}.dialog_examples.example_${slotIdx - 1}`"
+              :path="`${charPrefix}.dialog_examples.${idx}`"
               class="ml-2"
             />
             <v-spacer />
             <v-btn
-              v-if="hasContent(slotIdx - 1)"
               icon="mdi-delete"
               size="small"
               variant="text"
               color="error"
-              @click="clearExample(slotIdx - 1)"
+              :title="`Remove Example ${idx + 1}`"
+              @click="removeExample(idx)"
             />
           </v-card-title>
 
           <v-card-text class="flex-grow-1">
-            <div v-if="!editingSlot || editingSlot !== slotIdx - 1">
-              <div
-                v-if="exampleLines(slotIdx - 1).length === 0"
-                class="text-caption text-medium-emphasis text-center py-6"
-              >
-                Empty — click Edit to add lines
-              </div>
+            <div
+              v-if="ex.length === 0"
+              class="text-caption text-medium-emphasis text-center py-6"
+            >
+              Empty — click Edit to add lines
+            </div>
 
-              <div v-else class="example-preview">
-                <div
-                  v-for="(line, i) in exampleLines(slotIdx - 1)"
-                  :key="`${slotIdx}-${i}`"
-                  class="mb-2"
-                >
-                  <strong>{{ line.speaker || "??" }}:</strong>
-                  {{ line.line }}
-                </div>
+            <div v-else class="example-preview">
+              <div
+                v-for="(line, i) in ex"
+                :key="`${idx}-${i}`"
+                class="mb-2"
+              >
+                <strong>{{ line.speaker || "??" }}:</strong>
+                {{ line.line }}
               </div>
             </div>
 
-            <!-- Edit button when not editing -->
-            <div
-              class="text-center mt-4"
-              v-if="!editingSlot || editingSlot !== slotIdx - 1"
-            >
+            <div class="text-center mt-4">
               <v-btn
                 color="primary"
                 variant="tonal"
-                @click="startEditing(slotIdx - 1)"
+                @click="startEditing(idx)"
               >
                 Edit Example
               </v-btn>
@@ -66,18 +70,19 @@
       </v-col>
     </v-row>
 
+    <div v-else class="text-center text-medium-emphasis py-12">
+      No dialog examples yet. Click <strong>Add Example</strong> above to create one.
+    </div>
+
     <!-- ── Line Editor Dialog ─────────────────────────────────────── -->
     <v-dialog v-model="editorDialog" max-width="900" persistent scrollable>
       <v-card>
         <v-card-title class="d-flex align-center">
-          <span
-            >Editing Example
-            {{ editingSlot !== null ? editingSlot + 1 : "?" }}</span
-          >
+          <span>Editing Example {{ editingIdx !== null ? editingIdx + 1 : "?" }}</span>
           <v-spacer />
           <override-badges
-            v-if="editingSlot !== null"
-            :path="`${charPrefix}.dialog_examples.example_${editingSlot}`"
+            v-if="editingIdx !== null"
+            :path="`${charPrefix}.dialog_examples.${editingIdx}`"
           />
         </v-card-title>
 
@@ -167,53 +172,41 @@ import OverrideBadges from "@/components/OverrideBadges.vue";
 import type { DialogLineBlock } from "@/types/botSchema";
 import { useVariantAnyField } from "@/composables/useVariantAnyField.ts";
 
-// ── Props ────────────────────────────────────────────────────────
 const props = defineProps<{
   charPrefix: string; // e.g. "character.abc123"
 }>();
 
 const botStore = useBotStore();
 
-// ── Reactive state for editor ───────────────────────────────────
+// Single bound field for the whole array. Editing mutates the array in-place
+// then writes the new reference back through the variant-aware setter.
+const examplesField = useVariantAnyField<DialogLineBlock[][]>(
+  fieldPath(`${props.charPrefix}.dialog_examples`),
+  [],
+);
+
+const examples = computed(() => examplesField.value ?? []);
+
 const editorDialog = ref(false);
-const editingSlot = ref<number | null>(null);
+const editingIdx = ref<number | null>(null);
 const editingLines = ref<DialogLineBlock[]>([]);
 
-// ── Rated fields for each of the 4 fixed slots ──────────────────
-const example0 = useVariantAnyField<DialogLineBlock[]>(
-  fieldPath(`${props.charPrefix}.dialog_examples.example_0`),
-  [],
-);
-const example1 = useVariantAnyField<DialogLineBlock[]>(
-  fieldPath(`${props.charPrefix}.dialog_examples.example_1`),
-  [],
-);
-const example2 = useVariantAnyField<DialogLineBlock[]>(
-  fieldPath(`${props.charPrefix}.dialog_examples.example_2`),
-  [],
-);
-const example3 = useVariantAnyField<DialogLineBlock[]>(
-  fieldPath(`${props.charPrefix}.dialog_examples.example_3`),
-  [],
-);
+function addExample() {
+  examplesField.value = [...examples.value, []];
+  botStore.setDirty();
+}
 
-const examples = computed(() => [example0, example1, example2, example3]);
+function removeExample(idx: number) {
+  if (!confirm(`Remove Example ${idx + 1}?`)) return;
+  const next = examples.value.slice();
+  next.splice(idx, 1);
+  examplesField.value = next;
+  botStore.setDirty();
+}
 
-// ── Helpers ─────────────────────────────────────────────────────
-const hasContent = (slotIdx: number) => {
-  return examples.value[slotIdx]?.value?.length > 0;
-};
-
-const exampleLines = (slotIdx: number) => {
-  return examples.value[slotIdx]?.value ?? [];
-};
-
-// ── Editor logic ────────────────────────────────────────────────
-function startEditing(slotIdx: number) {
-  editingSlot.value = slotIdx;
-  editingLines.value = JSON.parse(
-    JSON.stringify(examples.value[slotIdx].value || []),
-  );
+function startEditing(idx: number) {
+  editingIdx.value = idx;
+  editingLines.value = JSON.parse(JSON.stringify(examples.value[idx] ?? []));
   editorDialog.value = true;
 }
 
@@ -226,26 +219,21 @@ function removeLine(index: number) {
 }
 
 function saveAndClose() {
-  if (editingSlot.value === null) return;
-
-  examples.value[editingSlot.value].value = editingLines.value.filter(
+  if (editingIdx.value === null) return;
+  const cleaned = editingLines.value.filter(
     (l) => l.speaker?.trim() || l.line?.trim(),
   );
+  const next = examples.value.slice();
+  next[editingIdx.value] = cleaned;
+  examplesField.value = next;
   botStore.setDirty();
   closeEditor();
 }
 
 function closeEditor() {
   editorDialog.value = false;
-  editingSlot.value = null;
+  editingIdx.value = null;
   editingLines.value = [];
-}
-
-function clearExample(slotIdx: number) {
-  if (confirm(`Clear Example ${slotIdx + 1}?`)) {
-    examples.value[slotIdx].value = [];
-    botStore.setDirty();
-  }
 }
 </script>
 

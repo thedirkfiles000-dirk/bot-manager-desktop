@@ -14,6 +14,16 @@ const commonRPRules = [
   "Characters act and speak only within scenes where they are physically present",
 ];
 
+export const defaultResponsePriority = [
+  "Never speak, act, or decide for the user — no exceptions",
+  "Maintain character voice and identity consistently",
+  "Honor continuity — what has been established stays established",
+  "Apply behavioral triggers when conditions are met",
+  "Match user energy and response length",
+  "Apply progression phase guidance",
+  "Honor formatting and style rules",
+];
+
 export function createDefaultBot(): GrokBotProfile {
   return {
     id: uuidv4(),
@@ -21,6 +31,7 @@ export function createDefaultBot(): GrokBotProfile {
     lastModified: new Date().toISOString(),
     intro: "",
     greeting: "",
+    response_priority: [...defaultResponsePriority],
     rp_rules: [...commonRPRules],
     background: {
       characters: [],

@@ -4,6 +4,7 @@ import type { TreeNode } from "@/types/treeNode.ts";
 
 // ── Panels ────────────────────────────────────────────────
 import BotBasicPanel from "@/components/panels/BotBasicPanel.vue";
+import BotResponsePriorityPanel from "@/components/panels/BotResponsePriorityPanel.vue";
 import BackgroundSettingPanel from "@/components/panels/BackgroundSettingPanel.vue";
 import BackgroundScenarioPanel from "@/components/panels/BackgroundScenarioPanel.vue";
 import BackgroundBoundariesPanel from "@/components/panels/BackgroundBoundariesPanel.vue";
@@ -188,12 +189,7 @@ function buildCharacterNode(char: { id: string; name?: string }): TreeNode {
         icon: "mdi-message-text",
         component: markRaw(CharacterDialogExamplesPanel),
         props: { charPrefix: prefix },
-        subPaths: [
-          `${prefix}.dialog_examples.example_0`,
-          `${prefix}.dialog_examples.example_1`,
-          `${prefix}.dialog_examples.example_2`,
-          `${prefix}.dialog_examples.example_3`,
-        ],
+        subPaths: [`${prefix}.dialog_examples`],
       },
     ],
   };
@@ -211,6 +207,13 @@ export function buildFullTree(
       icon: "mdi-robot",
       component: markRaw(BotBasicPanel),
       subPaths: ["name", "intro", "greeting", "usage_hints", "rp_rules"],
+    },
+    {
+      id: "bot-response-priority",
+      title: "Response Priority",
+      icon: "mdi-sort-numeric-ascending",
+      component: markRaw(BotResponsePriorityPanel),
+      subPaths: ["response_priority"],
     },
     {
       id: "background",

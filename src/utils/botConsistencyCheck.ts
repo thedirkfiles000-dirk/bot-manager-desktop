@@ -103,40 +103,34 @@ export function botConsistencyCheck(bot: GrokBotProfile): ConsistencyIssue[] {
     }
 
     // Dialog examples — speaker name validation
-    if (char.dialog_examples) {
-      let hasAnyExample = false;
-      for (const [slotKey, lines] of Object.entries(char.dialog_examples)) {
-        if (!lines || lines.length === 0) continue;
-        hasAnyExample = true;
-        lines.forEach((line, lineIdx) => {
-          const speaker = (line.speaker ?? "").trim();
-          if (!speaker) {
+    const examples = char.dialog_examples ?? [];
+    let hasAnyExample = false;
+    examples.forEach((lines, exIdx) => {
+      if (!lines || lines.length === 0) return;
+      hasAnyExample = true;
+      const exLabel = `Example ${exIdx + 1}`;
+      lines.forEach((line, lineIdx) => {
+        const speaker = (line.speaker ?? "").trim();
+        if (!speaker) {
+          issues.push({
+            severity: "warn",
+            section: `${charLabel} / Dialog`,
+            message: `${exLabel}, line ${lineIdx + 1} has no speaker name.`,
+          });
+        } else if (!rosterNames.has(speaker.toLowerCase())) {
+          // Heuristic: single-word generic stand-ins like "User", "You", "Human" are fine
+          const knownGenerics = new Set(["user", "you", "human", "player", "narrator"]);
+          if (!knownGenerics.has(speaker.toLowerCase())) {
             issues.push({
               severity: "warn",
               section: `${charLabel} / Dialog`,
-              message: `Dialog slot ${slotKey}, line ${lineIdx + 1} has no speaker name.`,
+              message: `Speaker "${speaker}" in ${exLabel} doesn't match any character or cohort name.`,
             });
-          } else if (!rosterNames.has(speaker.toLowerCase())) {
-            // Heuristic: single-word generic stand-ins like "User", "You", "Human" are fine
-            const knownGenerics = new Set(["user", "you", "human", "player", "narrator"]);
-            if (!knownGenerics.has(speaker.toLowerCase())) {
-              issues.push({
-                severity: "warn",
-                section: `${charLabel} / Dialog`,
-                message: `Speaker "${speaker}" in dialog slot ${slotKey} doesn't match any character or cohort name.`,
-              });
-            }
           }
-        });
-      }
-      if (!hasAnyExample) {
-        issues.push({
-          severity: "info",
-          section: `${charLabel}`,
-          message: `"${charLabel}" has no dialog examples. Few-shot examples help the LLM match voice and tone.`,
-        });
-      }
-    } else {
+        }
+      });
+    });
+    if (!hasAnyExample) {
       issues.push({
         severity: "info",
         section: `${charLabel}`,
@@ -165,25 +159,18 @@ export function botConsistencyCheck(bot: GrokBotProfile): ConsistencyIssue[] {
     // Progression phases
     const phases = char.progression_phases ?? [];
     phases.forEach((phase, phaseIdx) => {
-      if (phase.to_message != null && phase.from_message >= phase.to_message) {
-        issues.push({
-          severity: "error",
-          section: `${charLabel} / Progression Phases`,
-          message: `Phase #${phaseIdx + 1}: "Abandon After" (${phase.to_message}) must be greater than "From Message" (${phase.from_message}).`,
-        });
-      }
       if (!phase.description?.trim()) {
         issues.push({
           severity: "warn",
           section: `${charLabel} / Progression Phases`,
-          message: `Phase #${phaseIdx + 1} (${phase.shift_type ?? "Phase"} Shift at msg ${phase.from_message}) has no description.`,
+          message: `Phase #${phaseIdx + 1} (${phase.category ?? "Phase"} Shift, ${phase.phase ?? "?"}) has no description.`,
         });
       }
     });
 
-    // Duplicate from_message + shift_type combos
+    // Duplicate phase + category combos
     const phaseKeys = phases.map(
-      (p) => `${p.from_message}:${p.shift_type ?? "Phase"}`,
+      (p) => `${p.phase ?? "?"}:${p.category ?? "Phase"}`,
     );
     const seen = new Set<string>();
     const dupes = new Set<string>();
@@ -192,11 +179,11 @@ export function botConsistencyCheck(bot: GrokBotProfile): ConsistencyIssue[] {
       seen.add(key);
     });
     dupes.forEach((key) => {
-      const [msg, type] = key.split(":");
+      const [phaseBucket, type] = key.split(":");
       issues.push({
         severity: "warn",
         section: `${charLabel} / Progression Phases`,
-        message: `Multiple ${type} Shifts start at message ${msg}. Only one will be acted upon — merge or stagger them.`,
+        message: `Multiple ${type} Shifts in the ${phaseBucket} phase. Consider merging them or using a cue to differentiate.`,
       });
     });
 

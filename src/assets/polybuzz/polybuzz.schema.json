@@ -48,8 +48,13 @@
 
     "Background": {
       "type": "object",
-      "description": "Flat object whose property order defines prompt section order. Reserved keys: 'rp_rules', 'boundaries', 'meta', 'canon'. All other keys are character names pointing to Character objects.",
+      "description": "Flat object whose property order defines prompt section order. Reserved keys: 'response_priority', 'rp_rules', 'boundaries', 'meta', 'canon'. All other keys are character names pointing to Character objects.",
       "properties": {
+        "response_priority": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ordered tie-breaker list for conflicting instructions. Placed before rp_rules — earlier entries win."
+        },
         "rp_rules": {
           "type": "array",
           "items": { "type": "string" },
@@ -135,7 +140,12 @@
         "name":      { "type": "string" },
         "role":      { "type": "string" },
         "signature": { "type": "string" },
-        "notes":     { "type": "string" }
+        "notes":     { "type": "string" },
+        "surfacing_rules": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Conditional guidance for when this cohort member should appear or be referenced. Use If/When phrasing."
+        }
       }
     },
 
@@ -283,13 +293,13 @@
 
     "ProgressionPhase": {
       "type": "object",
-      "required": ["from_message", "description"],
+      "required": ["phase", "description"],
       "additionalProperties": false,
       "properties": {
-        "shift_type":    { "type": "string", "enum": ["Phase", "Narrative", "Tone"] },
-        "from_message":  { "type": "integer", "minimum": 0 },
-        "to_message":    { "type": "integer", "minimum": 1 },
-        "description":   { "type": "string" }
+        "phase":       { "type": "string", "enum": ["early", "mid", "late"] },
+        "category":    { "type": "string", "enum": ["Phase", "Narrative", "Tone"] },
+        "cue":         { "type": "string" },
+        "description": { "type": "string" }
       }
     },
 
@@ -311,7 +321,7 @@
       "properties": {
         "dialog_examples": {
           "type": "array",
-          "description": "Each entry is one conversation block. All characters' dialog_examples slots are flattened in character-declaration order, then slot order (example_0..3) within each character.",
+          "description": "Each entry is one conversation block. All characters' dialog_examples are flattened in character-declaration order, then array order within each character.",
           "items": {
             "type": "object",
             "required": ["dialog"],

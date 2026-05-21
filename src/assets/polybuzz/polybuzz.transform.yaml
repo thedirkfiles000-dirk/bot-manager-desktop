@@ -113,6 +113,14 @@ identity:
 
 background:
 
+  # — Response Priority —
+  # Ordered tie-breaker list placed before rp_rules so the LLM sees the conflict-
+  # resolution framework before reading the rules whose conflicts it must arbitrate.
+  - src: response_priority
+    dst: background.response_priority
+    op: identity
+    when: "response_priority.length > 0"
+
   # — Global RP Rules —
   - src: rp_rules
     dst: background.rp_rules
@@ -231,8 +239,8 @@ dialog:
     op: flatten
     note: >
       Outer iteration: characters in declaration order.
-      Inner iteration: slots example_0, example_1, example_2, example_3 (in order).
-      Slots that are absent or empty arrays are skipped entirely.
+      Inner iteration: each character's dialog_examples array in order.
+      Empty inner arrays are skipped entirely.
 
   - src: "background.characters[*].dialog_examples[*][*]"
     dst: "dialog.dialog_examples[*].dialog[*]"

@@ -86,6 +86,7 @@ export function buildPolyBuzzExport(bot: GrokBotProfile): Record<string, any> {
   return Object.assign(
     {},
     stripEmpties({
+      response_priority: [...(cleaned.response_priority || [])],
       rp_rules: [...(cleaned.rp_rules || [])],
       boundaries: cleaned.background?.boundaries ?? undefined,
       meta: cleaned.background?.meta ?? undefined,
@@ -115,6 +116,7 @@ export function buildHotChatBotsExport(bot: GrokBotProfile): Record<string, any>
   return Object.assign(
     {},
     stripEmpties({
+      response_priority: [...(cleaned.response_priority || [])],
       rp_rules: [...(cleaned.rp_rules || [])],
       canon: {
         anchors: cleaned.background?.anchors ?? undefined,
@@ -146,17 +148,14 @@ export function buildDialogExamples(bot: GrokBotProfile): { dialog_examples: { d
   };
 
   for (const char of (bot.background?.characters ?? [])) {
-    if (char.dialog_examples && Object.keys(char.dialog_examples).length > 0) {
-      for (const [, example] of Object.entries(char.dialog_examples)) {
-        if (example.length > 0) {
-          dialogExamples.dialog_examples.push({ dialog: [] });
-          for (const line of example.filter((l) => l.line.trim().length > 0)) {
-            dialogExamples.dialog_examples[
-              dialogExamples.dialog_examples.length - 1
-            ].dialog.push(`${line.speaker}: ${line.line}`);
-          }
-        }
-      }
+    const examples = char.dialog_examples ?? [];
+    for (const example of examples) {
+      if (!example || example.length === 0) continue;
+      const lines = example.filter((l) => l.line.trim().length > 0);
+      if (lines.length === 0) continue;
+      dialogExamples.dialog_examples.push({
+        dialog: lines.map((line) => `${line.speaker}: ${line.line}`),
+      });
     }
   }
 

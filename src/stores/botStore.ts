@@ -16,6 +16,7 @@ import { useComplianceStore } from "@/stores/complianceStore.ts";
 import { CharacterProfile, GrokBotProfile } from "@/types/botSchema.ts";
 import { pruneRedundantOverrides } from "@/utils/variantOverrides.ts";
 import { stripEmpties } from "@/types/typeSupport.ts";
+import { normalizeBot } from "@/utils/migrate.ts";
 import {
   createDefaultBot,
   createDefaultCharacter,
@@ -329,6 +330,10 @@ export const useBotStore = defineStore("bot", () => {
         );
       }
 
+      // Migrate legacy shapes (slot-based dialog_examples, numeric
+      // progression_phases) before validating against the current schema.
+      normalizeBot(parsed as GrokBotProfile);
+
       currentBot.value = parsed;
 
       // Reset the active variant if it doesn't exist in the newly loaded bot
@@ -400,6 +405,12 @@ export const useBotStore = defineStore("bot", () => {
 
     try {
       loading.value = true;
+
+      // Belt-and-suspenders: run migrations again before save so a v1 bot
+      // that somehow slipped through (or a bot mutated by external code)
+      // is normalized before the validator sees it.
+      normalizeBot(currentBot.value);
+
       const { valid, errors } = validateBotData(currentBot.value);
       if (!valid) {
         const errorMsg =

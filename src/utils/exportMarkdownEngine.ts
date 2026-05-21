@@ -70,6 +70,12 @@ export function generateBackgroundMarkdown(
     md.push({ h1: botName || "Untitled Bot" });
   }
 
+  // Response Priority (ordered tie-breaker, exported above rp_rules)
+  if (data.response_priority?.length) {
+    md.push(labelH(h1, "Response Priority", capsKeys));
+    md.push({ ol: data.response_priority });
+  }
+
   // Global RP Rules
   if (data.rp_rules?.length) {
     md.push(labelH(h1, "Global RP Rules", capsKeys));
@@ -129,7 +135,7 @@ export function generateBackgroundMarkdown(
   // Characters
   const characterNames = Object.keys(data).filter(
     (key) =>
-      !["name", "intro", "greeting", "rp_rules", "boundaries", "meta", "canon", "framing", "dialog_examples"].includes(key) &&
+      !["name", "intro", "greeting", "rp_rules", "response_priority", "boundaries", "meta", "canon", "framing", "dialog_examples"].includes(key) &&
       typeof data[key] === "object" &&
       data[key]?.name,
   );
@@ -260,6 +266,10 @@ function renderCanonCohorts(md: json2md.DataObject[], data: Record<string, any>,
           { key: "Notes", value: c.notes },
         ], capsKeys),
       });
+      if (c.surfacing_rules?.length) {
+        md.push({ p: `${displayKey("Surfacing Rules", capsKeys)}:` });
+        md.push({ ul: c.surfacing_rules });
+      }
     });
   }
 }
@@ -451,15 +461,20 @@ function renderCharPetNames(md: json2md.DataObject[], char: any, h: HeadingLevel
   }
 }
 
+const PHASE_ORDER: Record<string, number> = { early: 0, mid: 1, late: 2 };
+
 function renderCharProgression(md: json2md.DataObject[], char: any, h: HeadingLevel, capsKeys: boolean) {
   if (char.progression_phases?.length) {
     md.push(labelH(h, "Progression Phases", capsKeys));
-    const sorted = [...char.progression_phases].sort((a: any, b: any) => a.from_message - b.from_message);
+    const sorted = [...char.progression_phases].sort(
+      (a: any, b: any) => (PHASE_ORDER[a.phase] ?? 99) - (PHASE_ORDER[b.phase] ?? 99),
+    );
     md.push({
       ul: sorted.map((p: any) => {
-        const range = p.to_message != null ? `${p.from_message}-${p.to_message}` : `${p.from_message}+`;
-        const shiftKey = `${p.shift_type || "Phase"} Shift`;
-        return `${displayKey(shiftKey, capsKeys)} ${range}: ${p.description}`;
+        const phaseTag = `[${displayKey(p.phase, capsKeys)}]`;
+        const categoryKey = displayKey(`${p.category || "Phase"} Shift`, capsKeys);
+        const cuePart = p.cue ? ` (${displayKey("cue", capsKeys)}: ${p.cue})` : "";
+        return `${phaseTag} ${categoryKey}${cuePart}: ${p.description}`;
       }),
     });
   }
