@@ -71,8 +71,6 @@ export interface GrokBotProfile {
       location?: string;
       environment_tone?: string;
       realism?: string;
-      era?: string;
-      city?: string;
       specific_location?: string;
       lifestyle?: string;
     };
@@ -104,26 +102,13 @@ export interface GrokBotProfile {
       allowed?: string[];
       disallowed?: string[];
     };
-    /**
-     * Technical RP rules.
-     */
-    meta?: {
-      fourth_wall_behavior?: string;
-      continuity_rules?: string;
-    };
   };
   /**
    * Publishing status of the bot.
    */
   status?: 'unpublished' | 'public' | 'unlisted';
-  /**
-   * @deprecated Use `status` instead. Kept for backward compatibility.
-   */
-  flags?: string[];
   images?: string[];
   profileImage?: string;
-  imagesCount?: number;
-  profileUrl?: string;
   /**
    * Variant-specific overrides. Each variant overlays the base independently.
    */
@@ -144,7 +129,6 @@ export interface CharacterProfile {
   gender?: string;
   orientation?: string;
   role?: string;
-  overview?: string;
   lastModified: string;
   appearance?: AppearanceBlock;
   personality?: PersonalityBlock;
@@ -198,12 +182,9 @@ export interface StoryHooksBlock {
   goals?: string;
 }
 export interface BehaviorRulesBlock {
-  boundaries?: string;
   preferred_scene_types?: string[];
-  disallowed_scenes?: string[];
   romantic_availability: string;
   speech_style?: string;
-  dialect_or_accent?: string;
   pacing_preference?: string;
   character_specific_themes?: string;
 }

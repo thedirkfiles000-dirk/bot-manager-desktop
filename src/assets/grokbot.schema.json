@@ -14,8 +14,8 @@
   "properties": {
     "schema_version": {
       "type": "string",
-      "description": "Schema version stamp written on save (e.g., '2'). Absent on v1 files — treat absence as v1.",
-      "examples": ["3"]
+      "description": "Schema version stamp written on save. Absent or below current on legacy files — the loader migrates and rewrites to current.",
+      "examples": ["4"]
     },
     "id": {
       "type": "string",
@@ -70,9 +70,8 @@
         "Maintain character voice and identity consistently",
         "Honor continuity — what has been established stays established",
         "Apply behavioral triggers when conditions are met",
-        "Match user energy and response length",
-        "Apply progression phase guidance",
-        "Honor formatting and style rules"
+        "Match user energy, response length, and formatting/style rules",
+        "Apply progression phase guidance"
       ]
     },
     "rp_rules": {
@@ -128,8 +127,8 @@
           "properties": {
             "location": {
               "type": "string",
-              "description": "The canonical setting anchor — fill this first. Describe where and when the story takes place as a single combined statement. Era, city, and specific_location are optional refinements for when you need finer-grained control over those aspects separately.",
-              "examples": ["Small snowy town in Vermont, present day"]
+              "description": "The canonical setting anchor — where and when the story takes place as a single combined statement (era + region in one sentence is fine).",
+              "examples": ["Small snowy town in Vermont, present day", "Victorian England, 1880s London"]
             },
             "environment_tone": {
               "type": "string",
@@ -142,16 +141,6 @@
               "examples": [
                 "Grounded contemporary with no supernatural elements"
               ]
-            },
-            "era": {
-              "type": "string",
-              "description": "Historical period or time setting. Optional — only needed when the era carries significance on its own and isn't already clear from location.",
-              "examples": ["Present day", "Victorian England", "Near-future 2040s"]
-            },
-            "city": {
-              "type": "string",
-              "description": "Named city, town, or world area. Optional — only add when the specific named place matters separately from the broad location.",
-              "examples": ["New York City", "Evergreen Hollow (fictional Vermont town)"]
             },
             "specific_location": {
               "type": "string",
@@ -236,24 +225,6 @@
             }
           },
           "additionalProperties": false
-        },
-        "meta": {
-          "type": "object",
-          "description": "Technical RP rules.",
-          "required": [],
-          "properties": {
-            "fourth_wall_behavior": {
-              "type": "string",
-              "description": "How to handle OOC/meta comments.",
-              "examples": ["Ignore OOC; stay in-character always"]
-            },
-            "continuity_rules": {
-              "type": "string",
-              "description": "Additional persistence notes (supplements rp_rules).",
-              "examples": ["Time passes normally; events have consequences"]
-            }
-          },
-          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -262,12 +233,6 @@
       "type": "string",
       "enum": ["unpublished", "public", "unlisted"],
       "description": "Publishing status of the bot. Defaults to 'unpublished' if absent."
-    },
-    "flags": {
-      "type": "array",
-      "items": { "type": "string" },
-      "uniqueItems": true,
-      "description": "Deprecated. Kept for backward compatibility with older bot files."
     },
     "images": {
       "type": "array",
@@ -280,15 +245,6 @@
     "profileImage": {
       "type": "string",
       "description": "Filename of the selected profile picture (optional)."
-    },
-    "imagesCount": {
-      "type": "integer",
-      "minimum": 0,
-      "description": "Number of images attached."
-    },
-    "profileUrl": {
-      "type": "string",
-      "description": "Local URL to image."
     },
     "variants": {
       "description": "Variant-specific overrides. Each variant overlays the base independently.",
@@ -346,11 +302,7 @@
         },
         "role": {
           "type": "string",
-          "description": "Role in story (e.g., protagonist's sister, rival)."
-        },
-        "overview": {
-          "type": "string",
-          "description": "One-paragraph summary/vibe."
+          "description": "Role in story (e.g., protagonist's sister, rival). Also serves as the at-a-glance framing for the character."
         },
         "lastModified": {
           "type": "string",
@@ -544,17 +496,7 @@
       "type": "object",
       "required": [],
       "properties": {
-        "boundaries": {
-          "type": "string",
-          "description": "Prose hard limits (behavioral, romantic, etc.)."
-        },
         "preferred_scene_types": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "disallowed_scenes": {
           "type": "array",
           "items": {
             "type": "string"
@@ -566,11 +508,7 @@
         },
         "speech_style": {
           "type": "string",
-          "description": "How the character speaks (merged communication style)."
-        },
-        "dialect_or_accent": {
-          "type": "string",
-          "description": "Regional dialect, accent, or language quirks (e.g., 'Southern US drawl', 'Scots brogue', 'drops g's when relaxed, crisp when angry')."
+          "description": "How the character speaks — formality, verbosity, rhythm, vocabulary, plus any dialect or accent details (previously a separate 'dialect_or_accent' field; now merged here)."
         },
         "pacing_preference": {
           "type": "string",

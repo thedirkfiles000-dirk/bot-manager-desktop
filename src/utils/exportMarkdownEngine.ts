@@ -82,15 +82,13 @@ export function generateBackgroundMarkdown(
     md.push({ ul: data.rp_rules });
   }
 
-  // Boundaries & Meta — hoisted (PolyBuzz) or nested in canon (HotChatBots)
-  if (style.hoistBoundariesMeta && (data.boundaries || data.meta)) {
-    md.push(labelH(h1, "Boundaries & Meta", capsKeys));
+  // Boundaries — hoisted (PolyBuzz) or nested in canon (HotChatBots)
+  if (style.hoistBoundariesMeta && data.boundaries) {
+    md.push(labelH(h1, "Boundaries", capsKeys));
     md.push({
       ul: markdownList([
         { key: "Allowed", value: data.boundaries?.allowed },
         { key: "Disallowed", value: data.boundaries?.disallowed },
-        { key: "Fourth Wall", value: data.meta?.fourth_wall_behavior },
-        { key: "Continuity", value: data.meta?.continuity_rules },
       ], capsKeys),
     });
   }
@@ -117,15 +115,13 @@ export function generateBackgroundMarkdown(
       renderCanonCohorts(md, data, h2, h3, capsKeys);
       renderCanonLorebook(md, data, h2, capsKeys);
 
-      // Nested boundaries & meta (HotChatBots)
-      if (data.canon.boundaries || data.canon.meta) {
-        md.push(labelH(h2, "Boundaries & Meta", capsKeys));
+      // Nested boundaries (HotChatBots)
+      if (data.canon.boundaries) {
+        md.push(labelH(h2, "Boundaries", capsKeys));
         md.push({
           ul: markdownList([
             { key: "Allowed", value: data.canon.boundaries?.allowed },
             { key: "Disallowed", value: data.canon.boundaries?.disallowed },
-            { key: "Fourth Wall", value: data.canon.meta?.fourth_wall_behavior },
-            { key: "Continuity", value: data.canon.meta?.continuity_rules },
           ], capsKeys),
         });
       }
@@ -135,7 +131,7 @@ export function generateBackgroundMarkdown(
   // Characters
   const characterNames = Object.keys(data).filter(
     (key) =>
-      !["name", "intro", "greeting", "rp_rules", "response_priority", "boundaries", "meta", "canon", "framing", "dialog_examples"].includes(key) &&
+      !["name", "intro", "greeting", "rp_rules", "response_priority", "boundaries", "canon", "framing", "dialog_examples"].includes(key) &&
       typeof data[key] === "object" &&
       data[key]?.name,
   );
@@ -157,7 +153,6 @@ export function generateBackgroundMarkdown(
           { key: "Age", value: char.age },
           { key: "Gender", value: char.gender },
           { key: "Orientation", value: char.orientation },
-          { key: "Overview", value: char.overview },
           { key: "Core Drive", value: char.core_drive },
           { key: "User Viewpoint", value: char.user_viewpoint },
           { key: "Backstory", value: char.backstory },
@@ -243,12 +238,10 @@ function renderCanonSetting(md: json2md.DataObject[], data: Record<string, any>,
     md.push({
       ul: markdownList([
         { key: "Location", value: data.canon.setting.location },
-        { key: "Era", value: data.canon.setting.era },
-        { key: "City / Region", value: data.canon.setting.city },
         { key: "Specific Location", value: data.canon.setting.specific_location },
         { key: "Environment / Tone", value: data.canon.setting.environment_tone },
         { key: realismLabel, value: data.canon.setting.realism },
-        { key: "Lifestyle / Context", value: data.canon.setting.lifestyle },
+        { key: "Lifestyle", value: data.canon.setting.lifestyle },
       ], capsKeys),
     });
   }
@@ -395,14 +388,11 @@ function renderCharBehavior(
     if (hasBehavior) {
       md.push(labelH(h, "Behavior Rules", capsKeys));
       const bItems = markdownList([
-        { key: "Boundaries", value: char.behavior_rules?.boundaries },
         { key: "Speech Style", value: char.behavior_rules?.speech_style },
-        { key: "Dialect or Accent", value: char.behavior_rules?.dialect_or_accent },
         { key: "Romantic Availability", value: char.behavior_rules?.romantic_availability },
         { key: "Pacing", value: char.behavior_rules?.pacing_preference },
         { key: "Themes", value: char.behavior_rules?.character_specific_themes },
         { key: "Preferred Scenes", value: char.behavior_rules?.preferred_scene_types },
-        { key: "Disallowed Scenes", value: char.behavior_rules?.disallowed_scenes },
       ], capsKeys);
       if (bItems.length) md.push({ ul: bItems });
       if (char.character_rp_rules?.length) {
@@ -428,13 +418,10 @@ function renderCharBehavior(
       md.push({
         ul: markdownList([
           { key: "Speech Style", value: char.behavior_rules?.speech_style },
-          { key: "Dialect or Accent", value: char.behavior_rules?.dialect_or_accent },
           { key: "Pacing Preference", value: char.behavior_rules?.pacing_preference },
           { key: "Romantic Availability", value: char.behavior_rules?.romantic_availability },
-          { key: "Boundaries", value: char.behavior_rules?.boundaries },
           { key: "Character Themes", value: char.behavior_rules?.character_specific_themes },
           { key: "Preferred Scene Types", value: char.behavior_rules?.preferred_scene_types },
-          { key: "Disallowed Scenes", value: char.behavior_rules?.disallowed_scenes },
         ], capsKeys),
       });
       if (char.character_anchors?.length) {

@@ -2,35 +2,12 @@
 <template>
   <panel-wrapper title="Behavior Rules" subtitle="Scoped guidelines for how this character behaves, speaks, and interacts.">
 
-    <!-- Boundaries -->
     <v-row>
       <v-col cols="12">
-        <generic-textarea-panel
-          :path="`${props.charPrefix}.behavior_rules.boundaries`"
-          title="Boundaries"
-          helper-text="Prose hard limits or restrictions on what the character will/will not do."
-          rows="6"
-        />
-      </v-col>
-    </v-row>
-
-    <!-- Preferred / Disallowed scene types side-by-side -->
-    <v-row density="compact" class="mt-6">
-      <v-col cols="12" md="6">
         <item-list-panel
           :path="`${props.charPrefix}.behavior_rules.preferred_scene_types`"
           title="Preferred Scene Types"
           helper-text="Types of scenes or interactions the character enjoys or excels in."
-          prevent-duplicates
-          :show-add-button="true"
-          :show-clear-button="true"
-        />
-      </v-col>
-      <v-col cols="12" md="6">
-        <item-list-panel
-          :path="`${props.charPrefix}.behavior_rules.disallowed_scenes`"
-          title="Disallowed Scenes"
-          helper-text="Scenes or topics the character absolutely avoids or refuses."
           prevent-duplicates
           :show-add-button="true"
           :show-clear-button="true"
@@ -50,22 +27,14 @@
       </v-col>
     </v-row>
 
-    <!-- Speech Style + Dialect side-by-side -->
-    <v-row density="compact" class="mt-4">
-      <v-col cols="12" md="6">
+    <!-- Speech Style (now also covers dialect/accent) -->
+    <v-row class="mt-4">
+      <v-col cols="12">
         <generic-textarea-panel
           :path="`${props.charPrefix}.behavior_rules.speech_style`"
           title="Speech Style"
-          helper-text="How the character speaks — formality, verbosity, rhythm, vocabulary."
-          rows="5"
-        />
-      </v-col>
-      <v-col cols="12" md="6">
-        <generic-textarea-panel
-          :path="`${props.charPrefix}.behavior_rules.dialect_or_accent`"
-          title="Dialect or Accent"
-          helper-text="Regional dialect, accent, or language quirks (e.g., 'Scots brogue', 'drops g's when relaxed, crisp when angry')."
-          rows="5"
+          helper-text="How the character speaks — formality, verbosity, rhythm, vocabulary, and any dialect/accent or language quirks (e.g., 'Scots brogue; drops g's when relaxed, crisp when angry')."
+          rows="6"
         />
       </v-col>
     </v-row>

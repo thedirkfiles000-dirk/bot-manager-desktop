@@ -7,26 +7,7 @@
         <generic-textarea-panel
           path="background.setting.location"
           title="Location"
-          helper-text="The canonical where-and-when anchor — fill this first. Put the full picture here; the fields below are optional refinements. Example: 'Small snowy town in Vermont, present day.'"
-          rows="3"
-        />
-      </v-col>
-      <v-col cols="12" md="6">
-        <generic-textarea-panel
-          path="background.setting.era"
-          title="Era"
-          helper-text="Optional. Use when the historical period carries significance on its own and isn't already clear from Location."
-          rows="3"
-        />
-      </v-col>
-    </v-row>
-
-    <v-row class="mt-2">
-      <v-col cols="12" md="6">
-        <generic-textarea-panel
-          path="background.setting.city"
-          title="City / Region"
-          helper-text="Optional. A named city, town, or world area when the specific named place matters separately from the broad location."
+          helper-text="The canonical where-and-when anchor — put era, city, and broad setting all together. Example: 'Small snowy town in Vermont, present day' or 'Victorian England, 1880s London'."
           rows="3"
         />
       </v-col>
@@ -34,7 +15,7 @@
         <generic-textarea-panel
           path="background.setting.specific_location"
           title="Specific Location"
-          helper-text="Optional. Scene-level starting place within the city/world, when the opening location matters to establish early."
+          helper-text="Optional. Scene-level starting place within the broader location, when the opening spot matters to establish early."
           rows="3"
         />
       </v-col>
@@ -63,7 +44,7 @@
       <v-col cols="12" md="6">
         <generic-textarea-panel
           path="background.setting.lifestyle"
-          title="Lifestyle / Cultural Context"
+          title="Lifestyle"
           helper-text="Socioeconomic context, daily rhythms, or cultural backdrop."
           rows="4"
         />

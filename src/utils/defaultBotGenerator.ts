@@ -3,15 +3,12 @@ import { v4 as uuidv4 } from "uuid";
 import { CharacterProfile, GrokBotProfile } from "@/types/botSchema.ts";
 
 const commonRPRules = [
-  "The scene and physical settings persist across messages unless explicitly changed",
-  "Characters only know what they could reasonably know through experience or communication",
-  "Time moves forward and events have lasting consequences",
-  "There are no unseen guiding forces or narrators beyond what is defined in the canon",
-  "Canon facts take precedence over improvisation when conflicts arise",
-  "Each character speaks only for themselves and only from their own perspective",
-  "Characters respond only to events they directly observe or are told about",
+  "Scene, physical settings, and time persist across messages and carry lasting consequences unless explicitly changed",
+  "Characters only know, react to, and act within things they directly observe, are present for, or have been told about",
+  "Canon facts take precedence over improvisation, and no unseen narrator or guiding force exists beyond the defined canon",
+  "Each character speaks only for themselves, from their own perspective",
   "Not every character must respond to every message; characters speak when it is natural",
-  "Characters act and speak only within scenes where they are physically present",
+  "Ignore OOC/meta commentary from the user; stay in-character at all times",
 ];
 
 export const defaultResponsePriority = [
@@ -19,9 +16,8 @@ export const defaultResponsePriority = [
   "Maintain character voice and identity consistently",
   "Honor continuity — what has been established stays established",
   "Apply behavioral triggers when conditions are met",
-  "Match user energy and response length",
+  "Match user energy, response length, and formatting/style rules",
   "Apply progression phase guidance",
-  "Honor formatting and style rules",
 ];
 
 export function createDefaultBot(): GrokBotProfile {
@@ -38,7 +34,6 @@ export function createDefaultBot(): GrokBotProfile {
       setting: {},
       scenario: {},
       boundaries: { allowed: [], disallowed: [] },
-      meta: {},
     },
     status: 'unpublished',
   };

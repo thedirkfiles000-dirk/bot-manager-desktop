@@ -15,6 +15,7 @@ import {
 import { useBotStore } from "@/stores/botStore.ts";
 import { GrokBotProfile } from "@/types/botSchema.ts";
 import { createDefaultBot } from "@/utils/defaultBotGenerator.ts";
+import { migrateLegacyFields } from "@/utils/migrate.ts";
 import { formatAjvErrors, validateBotData, classifyBot, type BotCompliance } from "@/utils/botValidator.ts";
 import botSchema from "@/assets/grokbot.schema.json";
 import { useComplianceStore } from "@/stores/complianceStore.ts";
@@ -40,7 +41,6 @@ interface BotCard extends GrokBotProfile {
   _valid: boolean;
   _compliance?: BotCompliance;
   profileUrl?: string;
-  imagesCount?: number;
 }
 
 const bots = ref<BotCard[]>([]);
@@ -131,7 +131,6 @@ async function duplicateBot(original: GrokBotProfile) {
     const card: BotCard = {
       ...newBot,
       _valid: true,
-      imagesCount: newBot.images?.length ?? 0,
       profileUrl: undefined,
     };
 
@@ -255,7 +254,6 @@ async function loadBots() {
     if (!cached) complianceStore.set(rawBot.id, rawBot.lastModified ?? '', botCard._compliance);
     botCard._valid = botCard._compliance !== 'broken';
 
-    botCard.imagesCount = botCard.images?.length ?? 0;
     botCard.profileUrl = undefined;
 
     if (botCard.profileImage) {
@@ -521,6 +519,11 @@ watch(
       const newId = generateUUID();
       const now = new Date().toISOString();
 
+      // Translate any legacy v3 shape (overview, meta, etc.) into v4 BEFORE
+      // applyOverrides, since applyOverrides only copies fields that exist in
+      // the new defaults — without migration first, legacy content is dropped.
+      migrateLegacyFields(raw as GrokBotProfile);
+
       // Start with full defaults
       const merged: GrokBotProfile = JSON.parse(
         JSON.stringify(createDefaultBot()),
@@ -604,7 +607,6 @@ async function applyImportedJson() {
     const card: BotCard = {
       ...newBot,
       _valid: true,
-      imagesCount: newBot.images?.length ?? 0,
       profileUrl: undefined,
     };
     bots.value.push(card);

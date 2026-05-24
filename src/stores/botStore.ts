@@ -16,7 +16,7 @@ import { useComplianceStore } from "@/stores/complianceStore.ts";
 import { CharacterProfile, GrokBotProfile } from "@/types/botSchema.ts";
 import { pruneRedundantOverrides } from "@/utils/variantOverrides.ts";
 import { stripEmpties } from "@/types/typeSupport.ts";
-import { normalizeBot } from "@/utils/migrate.ts";
+import { CURRENT_SCHEMA_VERSION, normalizeBot } from "@/utils/migrate.ts";
 import {
   createDefaultBot,
   createDefaultCharacter,
@@ -432,7 +432,7 @@ export const useBotStore = defineStore("bot", () => {
 
       const updatedBot = {
         ...currentBot.value,
-        schema_version: "3",
+        schema_version: CURRENT_SCHEMA_VERSION,
         lastModified: new Date().toISOString(),
       };
 

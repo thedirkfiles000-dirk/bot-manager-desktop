@@ -64,23 +64,13 @@
       </v-col>
     </v-row>
 
-    <v-row density="compact" class="mt-0">
-      <v-col cols="12">
-        <generic-text-field-panel
-          :path="`${props.charPrefix}.role`"
-          title="Role"
-          placeholder="e.g., Protagonist, Mentor"
-        />
-      </v-col>
-    </v-row>
-
-    <!-- Longer text areas -->
     <v-row class="mt-4">
       <v-col cols="12">
         <generic-textarea-panel
-          :path="`${props.charPrefix}.overview`"
-          title="Overview"
-          helper-text="One-paragraph summary/vibe."
+          :path="`${props.charPrefix}.role`"
+          title="Role"
+          helper-text="The character's narrative role and at-a-glance framing — e.g. 'Protagonist's older sister; a former soldier who left the army after losing her unit.' This is both the structural role and the one-paragraph vibe."
+          rows="4"
         />
       </v-col>
     </v-row>

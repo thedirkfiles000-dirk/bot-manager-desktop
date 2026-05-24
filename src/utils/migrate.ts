@@ -5,6 +5,12 @@ import type {
   ProgressionPhase,
 } from "@/types/botSchema";
 
+/**
+ * Current schema version stamp written on save. Bots with an older or absent
+ * stamp are run through `migrateLegacyFields` on load.
+ */
+export const CURRENT_SCHEMA_VERSION = "4";
+
 type LegacyPhase = {
   shift_type?: "Phase" | "Narrative" | "Tone";
   from_message?: number;
@@ -121,10 +127,160 @@ function rewriteVariantPaths(
 }
 
 /**
+ * Translate legacy schema-v3 (and earlier) field shapes into schema-v4.
+ *
+ * Translation matrix (all idempotent):
+ *   flags                                  → dropped (was already deprecated)
+ *   imagesCount                            → dropped (derive from images.length)
+ *   profileUrl                             → dropped (runtime-computed object URL)
+ *   background.setting.era                 → folded into background.setting.location
+ *   background.setting.city                → folded into background.setting.location
+ *   background.meta.fourth_wall_behavior   → appended to rp_rules as "Fourth-wall: …"
+ *   background.meta.continuity_rules       → appended to rp_rules as a bullet
+ *   background.meta                        → removed once both sub-fields are absorbed
+ *   character.overview                     → moved to role if role empty;
+ *                                              else prepended to backstory;
+ *                                              dropped if both filled and non-empty
+ *   character.behavior_rules.boundaries    → entries pushed into character_anchors
+ *   character.behavior_rules.disallowed_scenes → entries pushed into character_anchors
+ *   character.behavior_rules.dialect_or_accent → appended to speech_style with a space
+ *
+ * Variant overrides whose `field_path` targets a removed/renamed leaf are
+ * dropped silently — the variants feature is rarely used and rewriting
+ * prose-merge paths is not meaningful.
+ *
+ * Mutates the bot in place. Idempotent — already-v4 bots pass through.
+ */
+export function migrateLegacyFields(bot: GrokBotProfile): void {
+  const b = bot as any;
+
+  delete b.flags;
+  delete b.imagesCount;
+  delete b.profileUrl;
+
+  const setting = b.background?.setting;
+  if (setting) {
+    const era = trimOrEmpty(setting.era);
+    const city = trimOrEmpty(setting.city);
+    if (era || city) {
+      const loc = trimOrEmpty(setting.location);
+      const extras = [city, era].filter(Boolean).join(", ");
+      setting.location = loc ? `${loc} — ${extras}` : extras;
+    }
+    delete setting.era;
+    delete setting.city;
+  }
+
+  const meta = b.background?.meta;
+  if (meta) {
+    const fw = trimOrEmpty(meta.fourth_wall_behavior);
+    const cont = trimOrEmpty(meta.continuity_rules);
+    if (fw || cont) {
+      if (!Array.isArray(bot.rp_rules)) bot.rp_rules = [];
+      if (fw) bot.rp_rules.push(`Fourth-wall handling: ${fw}`);
+      if (cont) bot.rp_rules.push(cont);
+    }
+    delete b.background.meta;
+  }
+
+  const chars = b.background?.characters as any[] | undefined;
+  if (Array.isArray(chars)) {
+    for (const char of chars) migrateCharacterLegacyFields(char);
+  }
+
+  pruneDeadVariantOverrides(b);
+
+  b.schema_version = CURRENT_SCHEMA_VERSION;
+}
+
+function migrateCharacterLegacyFields(char: any): void {
+  const overview = trimOrEmpty(char.overview);
+  if (overview) {
+    const role = trimOrEmpty(char.role);
+    if (!role) {
+      char.role = overview;
+    } else {
+      const backstory = trimOrEmpty(char.backstory);
+      char.backstory = backstory ? `${overview}\n\n${backstory}` : overview;
+    }
+  }
+  delete char.overview;
+
+  const br = char.behavior_rules;
+  if (br) {
+    const carryovers: string[] = [];
+    const boundaries = trimOrEmpty(br.boundaries);
+    if (boundaries) carryovers.push(boundaries);
+    if (Array.isArray(br.disallowed_scenes)) {
+      for (const entry of br.disallowed_scenes) {
+        const t = trimOrEmpty(entry);
+        if (t) carryovers.push(t);
+      }
+    }
+    if (carryovers.length) {
+      if (!Array.isArray(char.character_anchors)) char.character_anchors = [];
+      char.character_anchors.push(...carryovers);
+    }
+    delete br.boundaries;
+    delete br.disallowed_scenes;
+
+    const dialect = trimOrEmpty(br.dialect_or_accent);
+    if (dialect) {
+      const speech = trimOrEmpty(br.speech_style);
+      br.speech_style = speech ? `${speech} ${dialect}` : dialect;
+    }
+    delete br.dialect_or_accent;
+  }
+}
+
+const DEAD_BOT_PATHS = new Set([
+  "flags",
+  "imagesCount",
+  "profileUrl",
+  "background.setting.era",
+  "background.setting.city",
+  "background.meta",
+  "background.meta.fourth_wall_behavior",
+  "background.meta.continuity_rules",
+]);
+
+const DEAD_CHAR_PATH_PREFIXES = [
+  "overview",
+  "behavior_rules.boundaries",
+  "behavior_rules.dialect_or_accent",
+  "behavior_rules.disallowed_scenes",
+];
+
+function pruneDeadVariantOverrides(bot: any): void {
+  const variants = bot.variants;
+  if (!variants || typeof variants !== "object") return;
+  for (const block of Object.values<any>(variants)) {
+    if (Array.isArray(block?.bot_overrides)) {
+      block.bot_overrides = block.bot_overrides.filter(
+        (o: any) => !DEAD_BOT_PATHS.has(o?.field_path),
+      );
+    }
+    if (Array.isArray(block?.character_overrides)) {
+      block.character_overrides = block.character_overrides.filter(
+        (o: any) =>
+          !DEAD_CHAR_PATH_PREFIXES.some(
+            (p) => o?.field_path === p || o?.field_path?.startsWith(`${p}.`),
+          ),
+      );
+    }
+  }
+}
+
+function trimOrEmpty(v: unknown): string {
+  return typeof v === "string" ? v.trim() : "";
+}
+
+/**
  * Run all idempotent migrations on a bot in place. Safe to call on
  * already-modern bots.
  */
 export function normalizeBot(bot: GrokBotProfile): void {
   migrateProgressionPhases(bot);
   migrateDialogExamples(bot);
+  migrateLegacyFields(bot);
 }

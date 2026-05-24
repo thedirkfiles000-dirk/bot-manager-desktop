@@ -32,7 +32,7 @@ import { fieldPath } from "@/types/fieldPath";
 import OverrideBadges from "@/components/OverrideBadges.vue";
 
 const props = defineProps<{
-  path: string; // Required dot-path e.g. "greeting" or "background.meta.continuity_rules"
+  path: string; // Required dot-path e.g. "greeting" or "background.scenario.premise"
   title?: string; // Optional override title
   helperText?: string; // Optional helper
   showCharCount?: boolean;

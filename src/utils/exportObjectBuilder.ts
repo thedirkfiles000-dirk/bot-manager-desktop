@@ -16,7 +16,6 @@ function buildCharPolyBuzz(char: any) {
       nickname: char.nickname,
       archetype: char.archetype,
       role: char.role,
-      overview: char.overview,
       core_drive: char.core_drive,
       user_viewpoint: char.user_viewpoint,
       age: char.age,
@@ -52,7 +51,6 @@ function buildCharHotChatBots(char: any) {
       nickname: char.nickname,
       archetype: char.archetype,
       role: char.role,
-      overview: char.overview,
       core_drive: char.core_drive,
       user_viewpoint: char.user_viewpoint,
       age: char.age,
@@ -78,7 +76,7 @@ function buildCharHotChatBots(char: any) {
 
 /**
  * Build the PolyBuzz export object.
- * Boundaries/meta hoisted out of canon; dialog is separate.
+ * Boundaries hoisted out of canon; dialog is separate.
  */
 export function buildPolyBuzzExport(bot: GrokBotProfile): Record<string, any> {
   const cleaned = stripEmpties(bot, FORBIDDEN_FIELDS) as DeepPartial<GrokBotProfile>;
@@ -89,7 +87,6 @@ export function buildPolyBuzzExport(bot: GrokBotProfile): Record<string, any> {
       response_priority: [...(cleaned.response_priority || [])],
       rp_rules: [...(cleaned.rp_rules || [])],
       boundaries: cleaned.background?.boundaries ?? undefined,
-      meta: cleaned.background?.meta ?? undefined,
       canon: {
         triggers: cleaned.background?.triggers ?? undefined,
         scenario: cleaned.background?.scenario ?? undefined,
@@ -107,7 +104,7 @@ export function buildPolyBuzzExport(bot: GrokBotProfile): Record<string, any> {
 
 /**
  * Build the HotChatBots export object.
- * Boundaries/meta nested in canon; dialog bundled.
+ * Boundaries nested in canon; dialog bundled.
  */
 export function buildHotChatBotsExport(bot: GrokBotProfile): Record<string, any> {
   const cleaned = stripEmpties(bot, FORBIDDEN_FIELDS) as DeepPartial<GrokBotProfile>;
@@ -126,7 +123,6 @@ export function buildHotChatBotsExport(bot: GrokBotProfile): Record<string, any>
         cohorts: cleaned.background?.cohorts ?? undefined,
         lorebook: cleaned.background?.lorebook ?? undefined,
         boundaries: cleaned.background?.boundaries ?? undefined,
-        meta: cleaned.background?.meta ?? undefined,
       },
     }),
     ...(bot.background?.characters ?? []).map((char) => ({

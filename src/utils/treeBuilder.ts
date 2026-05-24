@@ -8,7 +8,6 @@ import BotResponsePriorityPanel from "@/components/panels/BotResponsePriorityPan
 import BackgroundSettingPanel from "@/components/panels/BackgroundSettingPanel.vue";
 import BackgroundScenarioPanel from "@/components/panels/BackgroundScenarioPanel.vue";
 import BackgroundBoundariesPanel from "@/components/panels/BackgroundBoundariesPanel.vue";
-import BackgroundMetaPanel from "@/components/panels/BackgroundMetaPanel.vue";
 import BackgroundAnchorsPanel from "@/components/panels/BackgroundAnchorsPanel.vue";
 import BackgroundCohortPanel from "@/components/panels/BackgroundCohortPanel.vue";
 import BackgroundLorebookPanel from "@/components/panels/BackgroundLorebookPanel.vue";
@@ -54,7 +53,6 @@ function buildCharacterNode(char: { id: string; name?: string }): TreeNode {
           `${prefix}.gender`,
           `${prefix}.orientation`,
           `${prefix}.role`,
-          `${prefix}.overview`,
         ],
       },
       {
@@ -155,7 +153,7 @@ function buildCharacterNode(char: { id: string; name?: string }): TreeNode {
         component: markRaw(CharacterBehaviorRulesPanel),
         props: { charPrefix: prefix },
         subPaths: [
-          `${prefix}.behavior_rules.boundaries`,
+          `${prefix}.behavior_rules.preferred_scene_types`,
           `${prefix}.behavior_rules.speech_style`,
           `${prefix}.behavior_rules.pacing_preference`,
           `${prefix}.behavior_rules.romantic_availability`,
@@ -228,8 +226,6 @@ export function buildFullTree(
           component: markRaw(BackgroundSettingPanel),
           subPaths: [
             "background.setting.location",
-            "background.setting.era",
-            "background.setting.city",
             "background.setting.specific_location",
             "background.setting.environment_tone",
             "background.setting.realism",
@@ -255,16 +251,6 @@ export function buildFullTree(
           subPaths: [
             "background.boundaries.allowed",
             "background.boundaries.disallowed",
-          ],
-        },
-        {
-          id: "bg-meta",
-          title: "Meta / RP Rules",
-          icon: "mdi-cog",
-          component: markRaw(BackgroundMetaPanel),
-          subPaths: [
-            "background.meta.fourth_wall_behavior",
-            "background.meta.continuity_rules",
           ],
         },
         {
