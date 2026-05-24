@@ -102,6 +102,8 @@ Level 2 also tells you less than Level 1 even when you do go looking. The save-t
 
 (Bot Manager Desktop includes a masking tool that manages this process.)
 
+**Update:** See TDF #17 for a more recent theory about "shadowbanning".
+
 **Rule:** A passing save is half a verdict. Watch search visibility and your CP delta (see TDF #9) before declaring an edit clean. The first level is fast feedback; the second level is the truth. When trying to clean a bot, look everywhere, not just where the filter is telling you to look.
 
 ---
@@ -117,6 +119,8 @@ I've seen it. I don't know why it does that. Changing the order of the search re
 Unless the app is just sprinkling boost markers for funsies. 
 
 At creator level 5 and above, new bots are given increased visibility for 48 hours. That doesn't show on the app as a boost marker. That seems to be a different thing.
+
+**Update:** See TDF #17 for a more recent theory about "shadowbanning", which includes a new view of boosting.
 
 **Rule:** Don't get too excited if a bot shows that orange arrow boost marker. This is an open question for me.
 
@@ -149,17 +153,7 @@ From trying to make a bot that was stable and filter-friendly, I ended up with a
 
 ## TDF #7 — Update Your Bots
 
-**A an update re-releases the bot and causes a re-scan.**
-
-An edited bot is not merely checked for violations, but also potentially reboosted. But it's more subtle than that.
-
-First, trivial updates might not generate a re-evaluation. It might need to be substantive.
-
-Second, bots can be reboosted. I've seen it. I've had bots gain a second wind by significantly updating my bot format without substantially changing the story.
-
-Third, updating a bot during a boost can be tricky. A substantive change could drop the bot out of boosting. The algorithm might decide you created good bot A, got the boost, and are now replacing the contents with bad bot B so B enjoys the boost. 
-
-**Rule:** Regular catalog maintenance serves discovery as well as quality. The upgrade is the promotion. Plan upgrades carefully.
+[Removed - most of the conslusions replaced by **TDF #17**]
 
 ---
 
@@ -176,6 +170,8 @@ No. I told him that a sentence that starts with "Remember" might read like a jai
 ---
 
 ## TDF #9 — Shadowban Detection: Synchronizing the Two Signals
+
+***WARNING:** The latest iteration of the app might be doing search placement during the editing pipeline differently. This section might no longer be relevant.*
 
 **PB's shadowban check is asynchronous. Use both signals before declaring a bot clean.**
 
@@ -195,6 +191,7 @@ The bot appearing and disappearing seemingly independently of your edits is a ti
 3. If the CP goes up to +30, your bot is not shadowbanned.
 4. If the CP stays steady but the bot is no longer being listed in search, you've been shadowbanned. Stop cycling and go back to fix the bot.
 
+**Update:** See TDF #17 for a more recent theory about "shadowbanning".
 
 **Rule:** Both signals must confirm. Search alone is not enough. If you haven't seen the +30 CP, you haven't seen the result.
 
@@ -210,7 +207,9 @@ Is it, though? This happens a fair bit with images from Japanese graphic novels.
 
 In another example, an adult woman sitting at a bar, modest sweater, jeans - good, right? Nope, the avatar violated out. I looked at it and saw how the light was falling across her top, creating areas of light and shadow that made her shape very obvious. I regenerated the image to mute the light slightly - you could barely tell there was a difference, but the high contrast across her front disappeared. The avatar passed.
 
-**Rule:** Try to imagine what the LLM is seeing specifically when it rejects an image. Look at it in zones. Deconstruct it.
+In a third example, there is a woman in a bikini, like one you'd see on any family-friendly beach. Just the model and a blank background. It trips a violation. Why? Consider the signals it sends: skin, woman, shape (hips, chest). Now put the same model in front of a beach backdrop. The signals change: beach, skin, ocean, summer, woman, volleyball, landsharks, shape (hips, chest). Now the same signals are diluted amid a number of other strong signals, the AI comes to a different conslusion about what the image is really about.
+
+**Rule:** Try to imagine what the AI is seeing specifically when it rejects an image. Look at it in zones. Deconstruct it. Avoid blank backgrounds that can make unhelpful signals seem stronger.
 
 ---
 
@@ -292,7 +291,31 @@ It is a useful tool for users to understand what is going on, but you have to se
 
 An interesting quirk. As you know, shadowbanning is the way in which the reach of a bot whose themes are seen as skirting the edges of what is allowed is limited. If you search for that bot by name or CID, it does not appear. It won't appear as a suggestion on the "For You" tab of the Explore page. Essentially, the bot is gone unless you already have a link to it in your Collections page. But beside the search function, the app also has a Weekly Trending Rank page, listing the hot bots for the week. I found a bot that a specific user could not search for, but when that same user went to Weekly Trending Rank, it was there as #13. 
 
+**Update:** See TDF #17 for a more recent theory about "shadowbanning".
+
 **Rule:** You might want to peruse the various "Top Bot" lists. It might show you bots you would not otherwise see otherwise.
+
+---
+
+## TDF #17 - Shadowbanning (The Myth and the Truth) ##
+
+Some of this is speculation, but it represents my current thinking about so-called shadowbanning. "So-called"? I think it's a misunderstood phenomenon and not as insidious as people think. What we're really talking about is search rankings.
+
+**Violations:** This one is obvious. Your bot has the red "Violation" flag. This is bad. The bot has broken some hard rules about content is is not being served up at all. It is not discoverable by any means. Only the owner can see it and even then, the owner cannot chat with it. The owner can only attempt to fix it.
+
+**Limited Reach (Not Shareable):** This is the "shadowban" most people think of. The bot works. The owner can chat with it. But if you search by CID, the bot does not appear in the list. So the bot is not discoverable but it is playable. The share button is disabled as well, meaning the owner cannot generate a link to the bot to hand to other users or to post online. If a user had an ongoing conversation with the bot before the limited reach flag was assigned, that conversation can continue. This state would cripple a bot's performance and most serious creators will check if the bot is in this state and attempt to fix it.
+
+**Limited Reach (Shareable):** This is like **Limited Reach (Not Shareable)** except that the share button works. To be honest, I'm not sure this state actually exists. I seem to recall bots that were not searchable by CID and yet were shareable. But then maybe I'm recalling this incorrectly. I'll watch for a definitive example to appear. Creators who care about bot performance don't distinguish between these two forms of limited reach (assuming they both actually exist as separate things).
+
+**Poor SEO Performance:** This is not a state at all. The bot is searchable by CID. That means it's reachable. That's it. End of story. Well, not quite. The search results will be curated, and the criteria are opaque. That's no different than Google - an entire industry evolved to track and optimize sites for Google search results. Inside of the **PolyBuzz** app, I search for my bot by name or theme (not CID) and it doesn't appear. "Shadowban!" I cry. No, it's just a poor bot. The search engine has ranked it so low that it's not appearing at all. A different set of search criteria might rank that bot higher. Or a re-write to deal with poor design elements will cause it to float higher in the results. Or patience - **PolyBuzz** will change the search engine details eventually and a low ranking bot today will rank higher tomorrow.
+
+Remember, the search results serve the interests of the customer, not of the bot creator. PB is interested in offering bots that satisfy the user and keep them chatting.
+
+What is the difference between "violations" and "limited reach" then? A bot in violation cannot be submitted to the AI because of egregious rule violations. This is not a search limitation. It is a violation of the terms of use. A bot that is "limited reach" is not breaking the terms of use, but is deemed so poor because of some questionable content that **PolyBuzz** refuses to deliver it to users (though direct sharing might still work) as doing so would damage the reputation of the search engine and of the platform overall. The owner earns some creation points for the bot, but since it is deemed severely subpar, **PolyBuzz** won't promote it.
+
+**The Boost Flag:** That little orange arrow beside the bot in the search listing. I discovered that a bot can show the boost flag in one search listing, but under a different search listing, the flag disappears (see **TDF #4** for details). What is that? My current theory is that it indicates that the search engine has decided that your bot is a particular good match for the search results, or that a secondary quality (like author ranking) is being engaged, and as such, the bot has moved up higher in the search results than it would otherwise sit. No boost flag means no post-search shuffling. Just a theory.
+
+**Rule:** The "violation" flag is a problem. Everything else is just search results.
 
 ---
 
