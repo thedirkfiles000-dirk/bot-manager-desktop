@@ -301,7 +301,7 @@ An interesting quirk. As you know, shadowbanning is the way in which the reach o
 
 Some of this is speculation, but it represents my current thinking about so-called shadowbanning. "So-called"? I think it's a misunderstood phenomenon and not as insidious as people think. What we're really talking about is search rankings.
 
-**Violations:** This one is obvious. Your bot has the red "Violation" flag. This is bad. The bot has broken some hard rules about content is is not being served up at all. It is not discoverable by any means. Only the owner can see it and even then, the owner cannot chat with it. The owner can only attempt to fix it.
+**Violations:** This one is obvious. Your bot has the red "Violation" flag. This is bad. The bot has broken some hard rules about content and is locked down completely. It is not discoverable by any means. Only the owner can see it and even then, the owner cannot chat with it. The owner can only attempt to fix it.
 
 **Limited Reach (Not Shareable):** This is the "shadowban" most people think of. The bot works. The owner can chat with it. But if you search by CID, the bot does not appear in the list. So the bot is not discoverable but it is playable. The share button is disabled as well, meaning the owner cannot generate a link to the bot to hand to other users or to post online. If a user had an ongoing conversation with the bot before the limited reach flag was assigned, that conversation can continue. This state would cripple a bot's performance and most serious creators will check if the bot is in this state and attempt to fix it.
 
