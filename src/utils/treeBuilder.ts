@@ -280,7 +280,13 @@ export function buildFullTree(
       ],
     },
 
-    // ── Dynamic character sections ──────────────────────────
-    ...characters.map(buildCharacterNode),
+    // ── Characters (folder holds the Add button + dynamic sections) ──
+    {
+      id: "characters-root",
+      title: "Characters",
+      icon: "mdi-account-multiple",
+      component: null, // ← folder node; renders even when empty
+      children: characters.map(buildCharacterNode),
+    },
   ];
 }

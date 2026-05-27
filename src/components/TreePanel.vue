@@ -159,7 +159,11 @@ function addCharacter() {
   botStore.setDirty();
 
   nextTick(() => {
-    openNodes.value = [...openNodes.value, `char-${newChar.id}`];
+    openNodes.value = [
+      ...openNodes.value,
+      "characters-root", // ensure the Characters folder is expanded
+      `char-${newChar.id}`,
+    ];
     activeNodeId.value = [`char-${newChar.id}-basic`]; // open first panel
   });
 }
@@ -182,7 +186,11 @@ function duplicateCharacter(nodeId: string) {
   botStore.setDirty();
 
   nextTick(() => {
-    openNodes.value = [...openNodes.value, `char-${copy.id}`];
+    openNodes.value = [
+      ...openNodes.value,
+      "characters-root",
+      `char-${copy.id}`,
+    ];
   });
 }
 
