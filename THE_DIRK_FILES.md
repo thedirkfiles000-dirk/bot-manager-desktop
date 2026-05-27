@@ -110,19 +110,13 @@ Level 2 also tells you less than Level 1 even when you do go looking. The save-t
 
 ## TDF #4 — Boosting
 
-**A boost might be a mirage.**
+**A boost might be a search flag, not a bot flag.**
 
 This is very speculative, but boosting seems odd. Your bot is "boosted" when it shows that little orange up-arrow in the listing in the app. Note that listing bots in the web doesn't show boosts. But "boosting" is what the community calls it. I've not see it described in any PolyBuzz document. And here's the weird thing — that marker isn't always shown. I can search for the bot by CID, and it shows boosted. But then I search using a word in the Intro, and in the search listing, the boost doesn't show. Or weirder yet, maybe it shows, but if I play with the filter and sort options on the search panel, without actually doing a new search, the boost marker comes and goes. 
-
-I've seen it. I don't know why it does that. Changing the order of the search results shouldn't cause a round trip to the server for fresh data. If so, it's the app deciding to show the boost marker. How does that make sense?
-
-Unless the app is just sprinkling boost markers for funsies. 
-
-At creator level 5 and above, new bots are given increased visibility for 48 hours. That doesn't show on the app as a boost marker. That seems to be a different thing.
-
+
 **Update:** See TDF #17 for a more recent theory about "shadowbanning", which includes a new view of boosting.
 
-**Rule:** Don't get too excited if a bot shows that orange arrow boost marker. This is an open question for me.
+**Rule:** Boosting is good, but it is likely a very focused visibility push.
 
 ---
 
@@ -153,7 +147,7 @@ From trying to make a bot that was stable and filter-friendly, I ended up with a
 
 ## TDF #7 — Update Your Bots
 
-[Removed - most of the conslusions replaced by **TDF #17**]
+[Removed - most of the conclusions replaced by **TDF #17**]
 
 ---
 
