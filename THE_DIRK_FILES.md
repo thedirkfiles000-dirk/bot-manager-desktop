@@ -112,9 +112,11 @@ Level 2 also tells you less than Level 1 even when you do go looking. The save-t
 
 **A boost might be a search flag, not a bot flag.**
 
-This is very speculative, but boosting seems odd. Your bot is "boosted" when it shows that little orange up-arrow in the listing in the app. Note that listing bots in the web doesn't show boosts. But "boosting" is what the community calls it. I've not see it described in any PolyBuzz document. And here's the weird thing — that marker isn't always shown. I can search for the bot by CID, and it shows boosted. But then I search using a word in the Intro, and in the search listing, the boost doesn't show. Or weirder yet, maybe it shows, but if I play with the filter and sort options on the search panel, without actually doing a new search, the boost marker comes and goes. 
-
-**Update:** See TDF #17 for a more recent theory about "shadowbanning", which includes a new view of boosting.
+The Boost Flag is that little orange arrow beside the bot in the search listing. I discovered that a bot can show the boost flag in one search listing, but under a different search listing, the flag disappears. What is that? 
+
+The boost arrow *only* appears in search engine listings. That is very significant. I have two working theories about it:
+1. It indicates that the search engine has decided that your bot is a particular good match for the search results, or that a secondary quality (like author ranking or recent strong bot performance) is being engaged, and as such, the bot has moved up higher in the search results than it would otherwise sit. No boost flag means no post-search shuffling upward. 
+2. It indicates that this bot's meta-data matches particularly well with the *specific user* performing the search, considering the rest of the criteria. So if you're looking for bots that are about "quiche" and "vacations", my high-quality bot about a pastry chef working a resort gets boosted, not just because of that match, but also subtle signals like chat patterns and bot strengths and so on that seem to show up in your prefered bots. This is a tentative theory, at best. But it explains how the Boost seems to float in an out. 
 
 **Rule:** Boosting is good, but it is likely a very focused visibility push.
 
@@ -297,25 +299,15 @@ Some of this is speculation, but it represents my current thinking about so-call
 
 **Violation:** This one is obvious. Your bot has the red "Violation" flag. This is bad. The bot has broken some hard rules about content and is locked down completely. It is not discoverable by any means. Only the owner can see it and even then, the owner cannot chat with it. The owner can only attempt to fix it.
 
-**Limited Reach (Not Shareable):** This is the "shadowban" most people think of. The bot works. The owner can chat with it. But if you search by CID, the bot does not appear in the list. So the bot is not discoverable but it is playable. The share button is disabled as well, meaning the owner cannot generate a link to the bot to hand to other users or to post online. If a user had an ongoing conversation with the bot before the limited reach flag was assigned, that conversation can continue. This state would cripple a bot's performance and most serious creators will check if the bot is in this state and attempt to fix it.
+**Limited Reach (Not Shareable):** This is the "shadowban" most people think of. The bot works. The owner can chat with it. But if you search by CID, the bot does not appear in the list. So the bot is not discoverable but it is playable. The share button is disabled as well, meaning the owner cannot generate a link to the bot to hand to other users or to post online. If a user had an ongoing conversation with the bot before the limited reach flag was assigned, that conversation can continue. Is this a bad bot? Not at all. You can load it and converse with it. But it's private. The standards to make it shareable and discoverable are tighter, and you haven't met them. That's fine if the bot is just for your enjoyment. 
 
-**Limited Reach (Shareable):** This is like **Limited Reach (Not Shareable)** except that the share button works. **PolyBuzz** won't share your bot, but you can share in manually via links. Creators who care about bot performance don't distinguish between these two forms of limited reach.
+**Limited Reach (Shareable):** This is like **Limited Reach (Not Shareable)** except that the share button works. **PolyBuzz** won't share your bot, but you can share in manually via links. The standards here are a bit tighter. The bot can be shared, one link at a time. However, **PolyBuzz** won't use it to satisfy search results. The standards for that are tighter still.
 
-**Poor SEO Performance:** This is not a state at all. The bot is searchable by CID. That means it's reachable. That's it. End of story. Well, not quite. The search results will be curated, and the criteria are opaque. That's no different than Google - an entire industry evolved to track and optimize sites so they appear higher in Google search results. Inside of the **PolyBuzz** app, I search for my bot by name or theme (not CID) and it doesn't appear. "Shadowban!" I cry. No, it's just a poor bot. The search engine has ranked it so low that it's not appearing at all. A different set of search criteria might rank that bot higher. Or a re-write to deal with poor design elements will cause it to float higher in the results. Or patience - **PolyBuzz** will change the search engine details eventually and a low ranking bot today might rank higher tomorrow (though I wouldn't bet on it).
+**Unlimited Reach:** The bot is searchable by CID. That's it. You've met the standards required for **PolyBuzz** to include your bot in search listings. Enjoy the traffic.
 
-Remember, the search results serve the interests of the user looking for a bot, not of the bot creator hoping their bot is selected. **PolyBuzz** is interested in offering bots that satisfy the user and keep them chatting.
-
-What is the difference between "violation" and "limited reach" then? 
-* A bot in violation cannot be submitted to the AI because of egregious rule violations. This is not a search limitation. It is a result of a violation of the terms of use (and as such, I strongly recommend that you fix violations right away). The presence of such a bot might even expose the **PolyBuzz** to legal liability or put the continued presence of **PolyBuzz** in the app store in jeopardy, so the bot is put under complete quarantine. 
-* A bot that is "limited reach" is not breaking the terms of use, but is deemed of such poor quality because of questionable content that **PolyBuzz** refuses to deliver it to users (though direct sharing might still work) as doing so would damage the reputation of the platform in the eyes of users. The owner earns some creation points for the bot, and unlike the violation state, this bot *can* be submitted to the AI to be played privately, but since it is deemed severely subpar, **PolyBuzz** won't promote it.
-
-**The Boost Flag:** That little orange arrow beside the bot in the search listing. I discovered that a bot can show the boost flag in one search listing, but under a different search listing, the flag disappears (see **TDF #4** for details). What is that? 
-
-The boost arrow *only* appears in search engine listings. That is very significant. I have two working theories about it:
-1. It indicates that the search engine has decided that your bot is a particular good match for the search results, or that a secondary quality (like author ranking or recent strong bot performance) is being engaged, and as such, the bot has moved up higher in the search results than it would otherwise sit. No boost flag means no post-search shuffling upward. 
-2. It indicates that this bot's meta-data matches particularly well with the *specific user* performing the search, considering the rest of the criteria. So if you're looking for bots that are about "quiche" and "vacations", my high-quality bot about a pastry chef working a resort gets boosted, not just because of that match, but also subtle signals like chat patterns and bot strengths and so on that seem to show up in your prefered bots. This is a tentative theory, at best. But it explains how the Boost seems to float in an out. 
-
-**Rule:** The "violation" flag is a real problem - fix it. Everything else is just search ranking, but "limited reach" should be dealt with. The boost arrow only appears in search results because it means that the bot entry is boosted in the context of this specific search listing (and perhaps only for that user). 
+A bot with unlimited reach isn't a *better* bot. It just meets stricter standards. Decide what you want the bot to do for you, and meet the standards required to get the job done.
+
+**Rule:** The "violation" flag is a real problem - fix it. Everything else is just meeting standards that achieve your goal for the bot. 
 
 ---
 
