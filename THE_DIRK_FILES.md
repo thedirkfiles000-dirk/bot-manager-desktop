@@ -72,14 +72,7 @@ This is exploitable, but don't get cocky. Level 2 is waiting.
 
 **Level 2 — Post-save, slow, deeper**
 
-Once a save passes Level 1, the bot is already saved and visible. Then, somewhere in PB's backend, a deeper review runs. We don't know exactly what it looks at, how it's invoked, or how long it queues — but it takes minutes (sometimes longer), it hits things Level 1 missed (especially anything that survived by dilution), and it's the source of post-publish shadowbans and "later violation" states.
-
-Level 2 itself appears to have at least two severity tiers:
-
-- **Soft** — the bot is quietly removed from search, but no formal violation flag. `opStatus` stays normal. The editor doesn't warn you. The only outward signal is that the bot has stopped showing up in search results.
-- **Hard** — a formal violation flag, the same red-flag state you'd see in the editor on a Level 1 fail. `opStatus` flips to violation.
-
-So step 2 isn't a single binary check; it's at least two graduated responses, possibly more we haven't catalogued.
+Once a save passes Level 1, the bot is already saved and visible. Then, somewhere in PB's backend, a deeper review runs. We don't know exactly what it looks at, how it's invoked, or how long it queues — but it takes minutes (sometimes longer), it hits things Level 1 missed (especially anything that survived by dilution).
 
 This is also why the *creator experience* of Level 2 is so different from Level 1. Level 1 is a call the app makes and waits on — when it returns, the editor can show you the result inside 350 milliseconds. Level 2 can't be called that way. Minutes of latency (probably mostly time spent in a queue) is too long for any UI to hold a save action open. So the check fires silently in the background after the save returns, and you find out by going to look. The asymmetry isn't an oversight; it's forced by the timing — there's no callback the editor can wait on.
 
@@ -88,13 +81,12 @@ That means *every* Level 2 verdict is creator-initiated to discover:
 - Refresh the bot card and watch for a violation flag to appear
 - Open the bot card and check whether it's shareable
 - Search by the bot's CID and see if it shows up in results
-- Watch the CP delta (see TDF #9)
 
 The system can't push the answer to you the way Level 1 does. You have to go fetch it.
 
-Level 2 also tells you less than Level 1 even when you do go looking. The save-time check identifies the failing field clearly; the async review's verdict, when it shows up at all, is at most a list of failed field IDs — never which words or themes specifically tipped the score. You get "Background failed" but not "this paragraph is the problem."
+Level 2 also tells you less than Level 1 even when you do go looking. The save-time check identifies the failing field clearly; the async review's verdict, when it shows up at all, is at most a list of failed field IDs — never which words or themes specifically tipped the score. You get "Background failed" but not "this word or this paragraph is the problem."
 
-**The trap:** passing Level 1 isn't passing. People hit save, see no editor error, assume they're clean, and move on. Minutes later the bot is shadowbanned or violating and they have no idea why, because the editor said yes.
+**The trap:** passing Level 1 isn't passing. People hit save, see no editor error, assume they're clean, and move on. Minutes later the bot get marked as a violation and they have no idea why, because the editor said yes.
 
 **Reverse Jenga technique:** If a bot is flagged and you can't isolate the trigger, remove content in chunks and re-save. Eventually, you'll remove something and the bot won't fall down (hence the "Reverse Jenga"). Each removal resets the cached score. Binary-search the offending field by halving the content until the flag disappears — the trigger is in the half you removed. Then look at that "zone" and see if adjusting vocabulary or rewriting the sentences can lower the signal that is causing the trouble.
 
@@ -102,9 +94,7 @@ Level 2 also tells you less than Level 1 even when you do go looking. The save-t
 
 (Bot Manager Desktop includes a masking tool that manages this process.)
 
-**Update:** See TDF #17 for a more recent theory about "shadowbanning".
-
-**Rule:** A passing save is half a verdict. Watch search visibility and your CP delta (see TDF #9) before declaring an edit clean. The first level is fast feedback; the second level is the truth. When trying to clean a bot, look everywhere, not just where the filter is telling you to look.
+**Rule:** A passing save is half a verdict.
 
 ---
 
@@ -124,7 +114,7 @@ The boost arrow *only* appears in search engine listings. That is very significa
 
 ## TDF #5 — Advanced Creator badge
 
-**The Advanced Creator badge** is awarded by a decision taken by PolyBuzz. It doesn't happen automatically at Level 6, nor is Level 6 a minimum required level. Nor is a number of bots a requirement, nor a number of messages. You can't ask for the badge either. Just watch for the invitation to appear in your PolyBot messages panel.
+**The Advanced Creator badge** is awarded by a decision taken by PolyBuzz. It doesn't happen automatically at Level 6, nor is Level 6 a minimum required level. Nor is a number of bots a requirement, nor a number of messages. 
 
 **Rule:** Advanced Creator badge is awarded, not merely assigned. It is a human decision.
 
@@ -136,7 +126,7 @@ The boost arrow *only* appears in search engine listings. That is very significa
 
 This is the counterintuitive lesson. When a bot premise gets flagged, the instinct is to add or change explicit content to route around the filter. This is almost always the wrong move. Consider what makes the bot a poor bot. It's likely more than just a few bad words.
 
-The fix and the improvement are the same move. If I have a bot that violates or shadowbans out, especially after it has been published for a while, I start again. What it driving the behavior of the character? What goals and constraints does it have? When you're forced to find a dramatic engine that doesn't depend on the blocked content, you find the bot that was worth building in the first place.
+The fix and the improvement are the same move. If I have a bot that is marked as a violation or won't show up in search, especially after it has been published for a while, I start again. What it driving the behavior of the character? What goals and constraints does it have? When you're forced to find a dramatic engine that doesn't depend on the blocked content, you find the bot that was worth building in the first place.
 
 **Examples from practice:**
 - A bot that had the user visit a naturist beach. Boring and bland. Pointlessly salacious. Little traffic and more than a few reported complaints, as the LLM had no guardrails to follow. I rewrote it - why is the user there? Because he was invited by the girl he met recently via an online dating app. He really likes her. Her profile said "naturalist", an autocorrect typo that she didn't spot. Now he realizes the mistake - she meant "naturist" and what he sees on the beach makes shocking sense. But she's so genuinely happy to see him, thinking he is part of the lifestyle. He is forced to pretend this is all normal to him and not turn into a drooling jerk. She has been disappointed by other men who misunderstand naturism. Now the bot is a comedy of mistaken identity with the romantic twist of the user trying to pass credibly as something he is not because he wants her to be happy.
@@ -147,13 +137,7 @@ From trying to make a bot that was stable and filter-friendly, I ended up with a
 
 ---
 
-## TDF #7 — Update Your Bots
-
-[Removed - most of the conclusions replaced by **TDF #17**]
-
----
-
-## TDF #8 — Words Matter
+## TDF #7 — Words Matter
 
 **You might be surprised by what words trigger a violation. You have to think like the AI.**
 
@@ -165,35 +149,7 @@ No. I told him that a sentence that starts with "Remember" might read like a jai
 
 ---
 
-## TDF #9 — Shadowban Detection: Synchronizing the Two Signals
-
-***WARNING:** The latest iteration of the app might be doing search placement during the editing pipeline differently. This section might no longer be relevant.*
-
-**PB's shadowban check is asynchronous. Use both signals before declaring a bot clean.**
-
-When you save a bot, two things happen:
-
-**Signal 1 — Search visibility**: The bot appears in search almost immediately after saving, before the shadowban check has completed. The bot is removed from the search list only *after* the check is completed and the bot has failed.
-
-**Signal 2 — Creator points**: A high quality bot earns 30 creator points. When you edit and save a high quality bot, you are awarded +10 points immediately. The remaining +20 is held back and awarded only after the shadowban check completes and passes. If the check fails, you stay at +10. (A straight-up violation means you don't get the +10 either, but we're talking shadowbans here.)
-
-**The trap:** Checking search immediately after a save hits a window where the check hasn't completed yet. The bot appears in the search list, and the temptation is to declare that bot as not shadowbanned, and maybe keep editing. Minutes later it drops from search. Creators who don't wait for the full CP delta end up chasing phantoms — undoing clean edits, making random changes, and concluding the filter is broken or random.
-
-The bot appearing and disappearing seemingly independently of your edits is a timing problem, not a filter problem. The signals aren't synchronized with your edit cadence.
-
-**Correct workflow:**
-1. Save the edit. The bot is searchable. Your CP went up by +10.
-2. Alternate checking your CP and performing a CID search every 10 seconds.
-3. If the CP goes up to +30, your bot is not shadowbanned.
-4. If the CP stays steady but the bot is no longer being listed in search, you've been shadowbanned. Stop cycling and go back to fix the bot.
-
-**Update:** See TDF #17 for a more recent theory about "shadowbanning".
-
-**Rule:** Both signals must confirm. Search alone is not enough. If you haven't seen the +30 CP, you haven't seen the result.
-
----
-
-## TDF #10 — Avatar Images
+## TDF #8 — Avatar Images
 
 **No, your image is not perfectly clean. Look at it again.**
 
@@ -209,35 +165,19 @@ In a third example, there is a woman in a bikini, like one you'd see on any fami
 
 ---
 
-## TDF #11 — The Apollo 13 Effect
-
-**Named after the subplot in the movie Apollo 13 when turning everything on at once is a disaster.**
-
-If you've seen the movie, you know the subplot. Gary Sinise is methodically going through combination after combination of power-ups to find an order that doesn't draw too much current and kill the crippled spacecraft.
-
-I've seen that effect in PolyBuzz violation detection. I pasted an entire bot, more than 9k characters of Background, saved it, and got a violation. Maybe it was too much at once. I went to the editor, found a convenient spot in the Background, and cut out everything from there down. I saved it. No violation. I restored maybe half of the material I deleted. Saved it. No violation. I restored the rest. Saved it. No violation.
-
-Remember to think in terms of signal strength. Hitting the filter with it all at once can be a problem. Now this suggests that the filter analyzes the delta. So analyzing A+B gives a different result than analyzing A, then adding B, and analyzing again. Perhaps it's an optimization to reduce the load when small edits are being submitted, and it has a measurable effect when submitting a bot a piece at a time instead of all at once.
-
-I wouldn't have assumed that, but I've seen the "Apollo 13" effect more than once, so it seems like this is the case. It's a quick first pass when trying to resolve a violation.
-
-**Rule:** Feed the bot to the filter in smaller chunks. That seems to avoid generating a large signal that triggers a violation.
-
----
-
-## TDF #12 — AIs are Stochastic; use that to your benefit
+## TDF #9 — AIs are Stochastic; use that to your benefit
 
 **Roll the dice a few times (using the web)**
 
 Stochastic is a fancy word for "random". I've had bots that violated on saving. I went back to the editor, and saved it again. The violation went away. No changes. I had a feeling it would work because the bot wasn't violating before, and the edit was not related to sensitive content.
 
-What happened? This might be related to the Apollo 13 effect. Or it could just be the nature of LLMs. The same prompt generates different output. The difference can be subtle. Since an AI seems to be evaluating bots for violations, a violation signal that is on the edge of the threshold might pass on a subsequent attempt thanks to that weird randomness in the way LLMs work. A practical problem is that in the most recent iterations of the app, the number of edits is limited to 5 a day. That limitation doesn't exist in the web UI. If you have access to the web UI, and your bot is not a themed bot (themed bots can't be edited through the web), you can save and then save again, without running out of saves.
+What happened? It could just be the nature of LLMs. The same prompt generates different output. The difference can be subtle. Since an AI seems to be evaluating bots for violations, a violation signal that is on the edge of the threshold might pass on a subsequent attempt thanks to that weird randomness in the way LLMs work. A practical problem is that in the most recent iterations of the app, the number of edits is limited to 5 a day. That limitation doesn't exist in the web UI. If you have access to the web UI, and your bot is not a themed bot (themed bots can't be edited through the web), you can save and then save again, without running out of saves.
 
-**Rule:** A violation might go away on a second save. Worth trying if you are editing a bot that was passing before.
+**Rule:** A violation might go away on a second save (or third or fourth). Worth trying if you are editing a bot that was passing before.
 
 ---
 
-## TDF #13 — Don't Overspecify; The AI Knows Stuff
+## TDF #10 — Don't Overspecify; The AI Knows Stuff
 
 **When a word or concept violates, ask yourself if you need to even say it**
 
@@ -249,7 +189,7 @@ Here's an important point. If the LLM knows that, why would it violate the bot b
 
 ---
 
-## TDF #14 — The App is the Messenger
+## TDF #11 — The App is the Messenger
 
 **The behavior you see isn't shipped in the app. It's served from PB's backend.**
 
@@ -259,7 +199,7 @@ If PB swapped one LLM model for another tomorrow, the app would not change in an
 
 This isn't unique to PB. It's how the web works, and it's how it's always worked. Web apps update server-side constantly. Mobile apps that connect to a backend — banking, streaming, social, AI tools — all work the same way: most of what you experience comes from the server, not from the install on your phone. PB is no different. The only twist with an AI platform is that the "server-side change" can include swapping out the actual intelligence the app is talking to.
 
-The ironic part: people sometimes report behavior shifts during periods when the app version is genuinely stable. They're not wrong. The app being stable doesn't mean *anything* is stable, because the app isn't where the behavior lives.
+The ironic part: people sometimes report behavior shifts during periods when the app version is genuinely stable. They're not wrong. The app being stable doesn't mean *everything* is stable, because the app isn't where the behavior lives.
 
 **Practical implications:**
 - Resist the urge to blame the app version. It's almost certainly not the cause of a behavior change.
@@ -271,7 +211,7 @@ The ironic part: people sometimes report behavior shifts during periods when the
 
 ---
 
-## TDF #15 - How does OOC work?
+## TDF #12 - How does OOC work?
 
 **You get to define it, but it's subtle**
 
@@ -283,33 +223,37 @@ It is a useful tool for users to understand what is going on, but you have to se
 
 ---
 
-## TDF #16 - Shadowbanned! (Or not?) ##
+## TDF #13 - What is Shadowbanning, Really ##
 
-An interesting quirk. As you know, shadowbanning is the way in which the reach of a bot whose themes are seen as skirting the edges of what is allowed is limited. If you search for that bot by name or CID, it does not appear. It won't appear as a suggestion on the "For You" tab of the Explore page. Essentially, the bot is gone unless you already have a link to it in your Collections page. But beside the search function, the app also has a Weekly Trending Rank page, listing the hot bots for the week. I found a bot that a specific user could not search for, but when that same user went to Weekly Trending Rank, it was there as #13. 
+Shadowbanning is that nemesis of many creators. A bot saves, no violation flag appears, but no one can see it. Is it in violation or isn't it?
 
-**Update:** See TDF #17 for a more recent theory about "shadowbanning".
+The answer is obvious. It is not in violation. There's nothing illegal in it. If it was, the big red flag "Violation" would appear beside it on your bot list.
 
-**Rule:** You might want to peruse the various "Top Bot" lists. It might show you bots you would not otherwise see otherwise.
+*But no one can see it! Doesn't that mean it's in violation of the rules?*
 
----
+No, and now we know that for a fact. PolyBuzz is, at the time of this writing, running a contest for bot creators. The details of the contest doesn't matter, but some of the submitted bots were ineligible because, and I quote, the bot is "not eligible for search or recommendation".
 
-## TDF #17 - Shadowbanning (The Myth and the Truth?) ##
+And that is what "shadowbanning" is called inside the Castle PolyBuzz.
 
-Some of this is speculation, but it represents my current thinking about so-called shadowbanning. "So-called"? I think it's a misunderstood phenomenon and not as insidious as people think. What we're really talking about is search rankings.
+Think about what PolyBuzz is providing to you, the bot creator. A database system that guides you in how to create a bot prompts and store them, and access to an AI that is tuned to running those prompts in a conversational mode.
 
-**Violation:** This one is obvious. Your bot has the red "Violation" flag. This is bad. The bot has broken some hard rules about content and is locked down completely. It is not discoverable by any means. Only the owner can see it and even then, the owner cannot chat with it. The owner can only attempt to fix it.
+I create a bot. I load it into the AI. I talk to it. This is fun!
 
-**Limited Reach (Not Shareable):** This is the "shadowban" most people think of. The bot works. The owner can chat with it. But if you search by CID, the bot does not appear in the list. So the bot is not discoverable but it is playable. The share button is disabled as well, meaning the owner cannot generate a link to the bot to hand to other users or to post online. If a user had an ongoing conversation with the bot before the limited reach flag was assigned, that conversation can continue. Is this a bad bot? Not at all. You can load it and converse with it. But it's private. The standards to make it shareable and discoverable are tighter, and you haven't met them. That's fine if the bot is just for your enjoyment. 
+That's it. That's the service. Now go home.
 
-**Limited Reach (Shareable):** This is like **Limited Reach (Not Shareable)** except that the share button works. **PolyBuzz** won't share your bot, but you can share in manually via links. The standards here are a bit tighter. The bot can be shared, one link at a time. However, **PolyBuzz** won't use it to satisfy search results. The standards for that are tighter still.
+Wait, there's a bit more. Maybe it would be fun to share those bots and see what people think. All hobbyists do this. PolyBuzz gives you an environment in which bots can be shared so you can play with other bots.
 
-**Unlimited Reach:** The bot is searchable by CID. That's it. You've met the standards required for **PolyBuzz** to include your bot in search listings. Enjoy the traffic.
+There's one thing though. You don't know who you're sharing with, and neither does PolyBuzz. As such, there need to be some guardrails. 
 
-A bot with unlimited reach isn't a *better* bot. It just meets stricter standards. Decide what you want the bot to do for you, and meet the standards required to get the job done.
-
-**Rule:** The "violation" flag is a real problem - fix it. Everything else is just meeting standards that achieve your goal for the bot. 
+The first guardrail is to determine whether the bot is "eligible for recommendation". Every bot has a "share" button. If the bot has concerning content, that share button is turned off. You can still use it. Enjoy! But PolyBuzz doesn't feel comfortable with it being shared. But there is a zone of content that is mildly uncomfortable but since the creator is the one sharing it, PolyBuzz figures the creator knows who they're sharing with. The button is turned on.
+
+Waiting for recommendations is a tedious way for bots to get shared, so PolyBuzz also provides a search function. Unlike the recommendation approach, in which the creator is passing the bot around, a search function is PolyBuzz's recommendation. And for the reputation of the company, any bot offered through search has to be top-notch.
+
+What we call shadowbanning is just a decision that a perfectly functional bot is good enough to pass around via recommendations or even to put on display via search. Nothing is banned. It's merely a different passing grade - the difference between a C and a B and an A. 
+
+**Rule:** The "violation" flag is a real problem - fix it. Everything else is just a passing grade. 
 
 ---
 
 *The Dirk Files is maintained alongside Bot Manager Desktop.*
-*Last updated: May 2026*
+*Last updated: June 2026*
