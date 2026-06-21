@@ -231,7 +231,7 @@ The answer is obvious. It is not in violation. There's nothing illegal in it. If
 
 *But no one can see it! Doesn't that mean it's in violation of the rules?*
 
-No, and now we know that for a fact. PolyBuzz is, at the time of this writing, running a contest for bot creators. The details of the contest doesn't matter, but some of the submitted bots were ineligible because, and I quote, the bot is "not eligible for search or recommendation".
+No, and now we know that for a fact. PolyBuzz is, at the time of this writing, running a contest for bot creators. The details of the contest don't matter, but some of the submitted bots were ineligible because, and I quote, the bots were "not eligible for search or recommendation".
 
 And that is what "shadowbanning" is called inside the Castle PolyBuzz.
 
