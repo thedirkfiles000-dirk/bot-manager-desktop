@@ -247,11 +247,11 @@ There's one thing though. You don't know who you're sharing with, and neither do
 
 The first guardrail is to determine whether the bot is "eligible for recommendation". Every bot has a "share" button. If the bot has concerning content, that share button is turned off. You can still use it. Enjoy! But PolyBuzz doesn't feel comfortable with it being shared. But there is a zone of content that is mildly uncomfortable but since the creator is the one sharing it, PolyBuzz figures the creator knows who they're sharing with. The button is turned on.
 
-Waiting for recommendations is a tedious way for bots to get shared, so PolyBuzz also provides a search function. Unlike the recommendation approach, in which the creator is passing the bot around, a search function is PolyBuzz's recommendation. And for the reputation of the company, any bot offered through search has to be top-notch.
+Waiting for recommendations is a tedious way for bots to get shared, so PolyBuzz also provides a search function. Unlike the recommendation approach, in which the creator is passing the bot around, a search function is PolyBuzz's recommendation. And anyone can use the search function. For the reputation of the company, any bot offered through search has to be top-notch and avoid anything PolyBuzz decides is controversial or problematic.
 
-What we call shadowbanning is just a decision that a perfectly functional bot is good enough to pass around via recommendations or even to put on display via search. Nothing is banned. It's merely a different passing grade - the difference between a C and a B and an A. 
+What we call shadowbanning is just a decision that a perfectly functional bot is good enough to pass around via recommendations or even to put on display via search. Nothing is banned. It's merely a different passing grade regarding PolyBuzz's comfort level for controlling who can see the bot - the difference between a C and a B and an A. 
 
-**Rule:** The "violation" flag is a real problem - fix it. Everything else is just a passing grade. 
+**Rule:** The "violation" flag is a real problem - fix it. Everything else is just a passing grade for inoffensive shareability. 
 
 ---
 
