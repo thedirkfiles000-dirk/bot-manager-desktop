@@ -13,6 +13,8 @@ The Rule of 7 replaces structured scaffolding with disciplined prose. Every sent
 
 The density target: a three or four character ensemble with full world-building inside a single 10,000 character Background field. Not by cutting content — by cutting overhead.
 
+The central optimization criterion — reduce uncertainty about future generations — maps onto information encoding principles that extend beyond bot authoring. Rule of 7 may be a specific instance of a more general strategy for communicating with probabilistic language models: compress multiple constraints per unit of context, avoid redundant encoding, and write at the level of abstraction that survives drift. That claim is not required to use the format effectively, but it suggests the principles here generalize beyond PolyBuzz and beyond roleplay.
+
 ---
 
 ## LLM-Friendly Assumptions
@@ -81,7 +83,7 @@ Markdown heading hierarchy creates lexical anchors that separate semantic cluste
 
 These surround and support the character content. They are not part of the seven character slots but are essential to the format.
 
-**Rules** — Persistent roleplay behavioral instructions: narration perspective, action beat formatting, POV constraints, OOC handling, continuity rules. Short, imperative, unambiguous. Placed first for maximum attention weight.
+**Rules** — Persistent roleplay behavioral instructions: narration perspective, action beat formatting, POV constraints, OOC handling, continuity rules. Short, imperative, unambiguous. Placed first for maximum attention weight. Note that modern instruction-tuned models have been explicitly conditioned to treat imperative language — "Never," "Always," "You are" — as learned control signals, not just semantic context. Rules placed here are both semantically establishing and behaviorally conditioning.
 
 **World** — The physical and social reality the characters inhabit: location, time, tone, relevant history, the user's role and starting state. One to three paragraphs of prose. Also carries prior contact closure — explicit statements about what has and hasn't happened between characters and the user before the story begins. This prevents the LLM from inventing false shared history to fill gaps left by a vague premise.
 
@@ -199,20 +201,36 @@ The Rule of 7 was developed through empirical testing on PolyBuzz. The following
 
 **State management** is the most significant open problem for long-form roleplay that Rule of 7 does not address. As conversations extend, mutable facts — what the user has said, what promises have been made, what has changed — drift faster than static characterization. A complementary state management format is the logical next development.
 
-**Model variance** is real. The format was developed and tested against models available on PolyBuzz. Different inference endpoints, quantization levels, and context window sizes will affect how well the format's heuristics hold. The principles are grounded in how transformers process text generally, but specific behaviors — how much early placement helps, how reliably Markdown anchors separate clusters — may vary by model.
+**Model variance** is real. The format was developed and tested against models available on PolyBuzz. Different inference endpoints, quantization levels, and context window sizes will affect how well the format's heuristics hold. The principles are grounded in how transformers process text generally, but specific behaviors may vary by model.
+
+---
+
+## Companion Documents
+
+Rule of 7 is the first document in a larger methodology. The specification addresses static characterization. The following companion documents are identified as the logical next developments:
+
+**Rule of 7: State** — managing mutable world state: injuries, inventory, known secrets, evolving relationships, and session continuity. The complement to characterization for long-running scenarios.
+
+**Rule of 7: Examples** — annotated real bots showing why each sentence is present and what predictive work it performs. The validation of the methodology through demonstrated practice.
+
+**Rule of 7: Failure Modes** — a catalog of known failure patterns (voice bleed, relationship drift, invented history, personality collapse, plot derailment) and how the format addresses each one.
+
+**Rule of 7: Validation** — side-by-side comparisons of identical scenarios written in traditional schema versus Rule of 7, with conversation transcripts demonstrating performance differences. The empirical case for the format.
 
 ---
 
 ## Technical Appendix
 *For readers with machine learning backgrounds. The claims in this section are offered as hypotheses grounded in observed behavior rather than controlled experimental results. Correction and refinement are welcome.*
 
-**On the core mechanism.** The Rule of 7 is grounded in one observation: LLMs generate text by predicting the next token from context. Everything in the format follows from that. A well-written Engine slot reduces uncertainty about future token predictions by establishing a strong prior for the character's behavior. A Wound establishes causality that constrains how the character interprets events. Dialog Examples are few-shot demonstrations that shift the probability distribution toward the target voice register. The format doesn't instruct the LLM — it shapes the probability space the LLM is predicting within.
+**On the core mechanism.** The Rule of 7 is grounded in one observation: LLMs generate text by predicting the next token from context. Everything in the format follows from that. A well-written Engine slot reduces uncertainty about future token predictions by establishing a strong prior for the character's behavior. A Wound establishes causality that constrains how the character interprets events. Dialog Examples are few-shot demonstrations that shift the probability distribution toward the target voice register. The format primarily shapes the probability distribution the LLM predicts within, rather than relying solely on explicit procedural instructions — though both mechanisms operate simultaneously. Modern instruction-tuned models have been explicitly conditioned through supervised fine-tuning and reinforcement learning to treat imperative language as learned control signals. "You are," "Never," and "Always" are not just semantic context — they trigger conditioned compliance behaviors. Rule of 7 therefore operates on two levels: semantic characterization that narrows the prediction space, and explicit behavioral instructions that leverage instruction-tuning conditioning. Acknowledging both gives a more complete account of why the format works.
+
+**On the information theory framing.** The central optimization criterion — reduce uncertainty about future generations — maps directly onto information-theoretic principles. Compress multiple constraints per unit of context. Avoid redundant encoding. Write at the level of abstraction that survives drift. These are the same principles that govern efficient encoding in other domains. Rule of 7 may be a specific instance of a more general information encoding strategy for probabilistic language models rather than a prompt engineering convention specific to roleplay. This claim is offered as a hypothesis worth investigating, not an established result.
 
 **On positional priority.** Early versions of this specification claimed that earlier content receives higher attention weight, which is true but overstated for modern models. GPT-3 era models showed strong primacy effects. Modern long-context models with RoPE scaling, attention sinks, and improved positional encoding have reduced but not eliminated this effect. The practical guidance — place Rules and Engine early — remains valid as a heuristic: early placement reduces competition with later narrative detail and establishes priors before the LLM has accumulated conflicting context. It is not a guarantee of attention weighting and should not be treated as one.
 
 **On Markdown as semantic chunking.** The claim that `##` headings function as chapter markers for LLMs is probably correct in effect but uncertain in mechanism. The LLM was trained on vast quantities of Markdown-formatted text — technical documentation, wikis, README files — where heading hierarchy consistently correlates with semantic boundaries. Whether the model has learned to treat headings as meaningful separators, or whether the effect is simply that headings create lexical anchors that reduce interference between adjacent sections, is not fully resolved. The practical effect — reduced bleed between character blocks — is consistent in testing. The mechanism behind it is an open question.
 
-**On plot locking.** The specification uses language like "lock" and "non-substitutable" to describe Trigger entries for plot-critical events. The actual mechanism is probabilistic, not deterministic. Explicit, detailed specification of an event makes alternative continuations statistically unattractive by concentrating probability mass around the intended continuation. The LLM is not executing a runtime constraint — it is predicting tokens from a context that strongly favors one outcome. The practical result is the same. The language of "locking" is an authoring metaphor, not a technical description.
+**On plot locking.** The specification uses language like "statistically dominant" and "alternatives unattractive" to describe Trigger entries for plot-critical events. The actual mechanism is probabilistic, not deterministic. Explicit, detailed specification of an event makes alternative continuations statistically unattractive by concentrating probability mass around the intended continuation. The LLM is not executing a runtime constraint — it is predicting tokens from a context that strongly favors one outcome. The practical result is reliable. The language of "locking" used in earlier versions of this document was an authoring metaphor, not a technical description, and has been replaced throughout.
 
 **On prose versus structure.** The claim that prose outperforms rigid schema is supported by the observation that modern transformers build contextual embeddings over text rather than executing parsers over labels. Coherent prose allows the model to infer relationships through the same mechanisms it uses to process training data. However, this is not universal. Certain structured information — lookup data, enumerated conditionals, fixed values — is robust in labeled form and benefits from explicit structure. The principle is not prose everywhere but prose for semantic content, structure for mechanical content. The boundary between those categories requires authoring judgment.
 
@@ -220,7 +238,7 @@ The Rule of 7 was developed through empirical testing on PolyBuzz. The following
 
 **On few-shot calibration via Dialog Examples.** The use of Dialog Examples as voice calibration is grounded in established few-shot learning behavior. Demonstration examples shift the model's output distribution toward the demonstrated register more reliably than prose descriptions of the same register. "She deflects with humor" is a description. An example of her deflecting with humor is a demonstration. Demonstrations are more predictively constraining than descriptions for the same token cost, which is why Dialog Examples belonging in a separate field rather than embedded in prose is architecturally significant when a separate budget exists.
 
-**On the information hierarchy.** A second reviewer proposed a priority ranking for the seven slots based on predictive importance rather than literary convention: Rules, Engine, Dynamic, Triggers, Wound, Voice, Limits, Body. This ranking reflects the observation that Engine and Dynamic most directly constrain per-exchange generation — Engine establishes the character's prior, Dynamic constrains how that prior expresses in response to the user. The remaining slots provide supporting context that the model draws on less directly per exchange. The specification places Engine first in the character block for this reason, but does not enforce a strict ordering of remaining slots. Authoring clarity is weighted against strict predictive hierarchy for practical usability.
+**On the information hierarchy.** A reviewer proposed a priority ranking for the seven slots based on predictive importance rather than literary convention: Rules, Engine, Dynamic, Triggers, Wound, Voice, Limits, Body. This ranking reflects the observation that Engine and Dynamic most directly constrain per-exchange generation — Engine establishes the character's prior, Dynamic constrains how that prior expresses in response to the user. The specification places Engine first in the character block for this reason, but does not enforce a strict ordering of remaining slots. Authoring clarity is weighted against strict predictive hierarchy for practical usability.
 
 ---
 
